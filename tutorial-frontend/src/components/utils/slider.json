@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Land Registra",
+    "detail": "He is in charge of establishing the final land title"
+  },
+  {
+    "name": "Land Surveyor",
+    "detail": "He is in charge of getting the exact coordinates of a piece of land"
+  },
+  {
+    "name": "Notary",
+    "detail": "He acts as a judge and drafts a contract to be signed by the buyer and the seller"
+  },
+  {
+    "name": "The Buyer",
+    "detail": "This is the person that wants to buy the land that is, the person on whose name a new land title will be established"
+  },
+  {
+    "name": "The seller",
+    "detail": "The person that wants to transfer his ownership to another person"
+  },
+  {
+    "name": "FragMark",
+    "detail": "The system that permits all this to be a sucess"
+  }
+]

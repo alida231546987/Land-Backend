@@ -1,0 +1,21 @@
+[
+    {
+      "image": "./path/to/image1.jpg",
+      "price": "150,000",
+      "name": "Property 1",
+      "detail": "Description for Property 1"
+    },
+    {
+      "image": "./path/to/image2.jpg",
+      "price": "200,000",
+      "name": "Property 2",
+      "detail": "Description for Property 2"
+    },
+    {
+      "image": "./path/to/image3.jpg",
+      "price": "250,000",
+      "name": "Property 3",
+      "detail": "Description for Property 3"
+    }
+  ]
+  

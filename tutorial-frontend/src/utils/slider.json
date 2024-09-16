@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Land Registrer",
+    "price": "",
+    "detail": "He is the person in charge of establishing documents related to the ownership of a land like the Certificate of Ownership and the Final Land Title",
+    "image": ""
+  },
+  {
+    "name": "Notary",
+    "price": "",
+    "detail": "He acts as a judge in front of whom the land buyer and land seller sign a contract stipulating that they are both agreeing",
+    "image": ""
+  },
+  {
+    "name": "Land Surveyor",
+    "price": "",
+    "detail": "He is in charge of getting the exact coordinates of a piece of land and establishing the technical file ",
+    "image": ""
+  },
+  {
+    "name": "Land Owner",
+    "price": "",
+    "detail": "This is the person that wants to sell out his piece of land to another person ",
+    "image": ""
+  },
+  {
+    "name": "Land Buyer",
+    "price": "",
+    "detail": "This is the person under whose name a new land title is established because he is the buyer",
+    "image": ""
+  },
+  {
+    "name": "FragMark",
+    "price": "",
+    "detail": "The Web app which will permit us ton establish a land title and verify coordinates based on this procedue only",
+    "image": ""
+  }
+]

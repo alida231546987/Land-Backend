@@ -1,0 +1,115 @@
+.login-wrapper {
+    /* background: url('../../../assets/land.jpg'); */
+    background-size: cover;
+    margin: 0;
+    /* padding-left: 500px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: screen;
+    height: screen;
+    background: no-repeat;
+    background-size: cover;
+}
+
+.wrapper1 {
+    width: 380px; /* Reduced width for a smaller wrapper */
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    /* color: #fff; */
+    border-radius: 10px;
+    padding: 30px 20px; /* Adjusted padding for a tighter layout */
+    text-align: center;
+    justify-content: center;
+}
+
+.wrapper h1 {
+    font-size: 28px; /* Reduced font size for a more compact design */
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 10%; /* Reduced width for smaller input boxes */
+    height: 10px; /* Reduced height for input boxes */
+    background: transparent;
+    margin: 20px auto; /* Center the input box within the wrapper */
+}
+
+.input-box input {
+    width: 80%;
+    height: 45%;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 30px; /* Reduced border radius */
+    font-size: 14px; /* Reduced font size for input text */
+    color: #fff;
+    padding: 0 40px 0 15px; /* Adjusted padding for smaller size */
+}
+
+.input-box input::placeholder {
+    color: #fff;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 15px; /* Adjusted position for better alignment */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px; /* Increased icon size slightly */
+}
+
+.wrapper .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px; /* Slightly reduced font size */
+    margin: -10px 0 10px;
+}
+
+.remember-forgot label input {
+    accent-color: #fff;
+    margin-right: 4px;
+}
+
+.remember-forgot a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.wrapper button {
+    width: 80%; /* Reduced width of the button */
+    height: 40px; /* Slightly reduced height */
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 30px; /* Adjusted border radius to match input */
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 15px; /* Reduced font size for a smaller button */
+    color: #333;
+    font-weight: 700;
+    margin: 15px auto; /* Center the button within the wrapper */
+}
+
+.wrapper .register-link {
+    font-size: 13px; /* Slightly reduced font size */
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.register-link p a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link p a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,199 @@
+/* Basic Reset for all elements to avoid default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles including font and background color */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6; /* Light background color */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed; /* Fixed position to stay in place when scrolling */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px; /* Initial width of sidebar */
+    background-color: green; /* Dark background color */
+    padding-top: 20px; /* Space at the top for title */
+    transition: width 0.3s; /* Smooth transition for collapsing */
+    overflow: hidden; /* Hide overflow content */
+}
+
+.sidebar.collapsed {
+    width: 0px; /* Reduced width when collapsed */
+}
+
+.sidebar h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5em;
+}
+
+/* Unordered list style in sidebar */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px;
+    text-align: left;
+}
+
+.sidebar ul li a {
+    color: white; /* Light gray text color */
+    display: block;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.sidebar ul li a:hover {
+    color: white; /* Change to white on hover */
+}
+
+.sidebar ul li.active a {
+    color: #fff;
+    background-color: yellowgreen; /* Darker background for active item */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Sidebar and text styles when collapsed */
+.sidebar.collapsed h2,
+.sidebar.collapsed ul li a {
+    text-align: center;
+}
+
+.sidebar.collapsed ul li a {
+    padding: 15px 0;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 240px; /* Space for the sidebar */
+    padding: 20px;
+    transition: margin-left 0.3s;
+    padding-bottom: 600px/* control the position of the middle content */
+}
+
+.main-content.collapsed {
+    margin-left: 60px; /* Reduced space when sidebar is collapsed */
+}
+
+/* Header style */
+.header {
+    background-color: green; /* Primary blue color */
+    color: #fff;
+    padding: 15px;
+    font-size: 50px;
+    position: relative;
+    transition: padding-left 0.3s;
+}
+
+.header.collapsed {
+    padding-left: 80px;
+}
+
+.toggle-btn {
+    position: absolute;
+    left: 0px;
+    top: 5px;
+    font-size: 10px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    background: none;
+}
+
+/* Content section styles */
+.content {
+    display: none; /* Initially hide content */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.content.active {
+    display: block; /* Show only active content */
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f7f6;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #007bff; /* Button color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.btn-edit {
+    background-color: #28a745; /* Green for edit button */
+}
+
+.btn-delete {
+    background-color: #dc3545; /* Red for delete button */
+}
+
+.btn-add {
+    background-color: #ffc107; /* Yellow for add button */
+}
+
+/* Notification item styles */
+.notification-item {
+    background-color: #f4f7f6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 5px solid #007bff; /* Blue border for notifications */
+}
+
+/* PDF form styles */
+.pdf-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-form label {
+    margin-bottom: 5px;
+}
+
+.pdf-form input,
+.pdf-form select {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.pdf-form button {
+    align-self: flex-start;
+}
