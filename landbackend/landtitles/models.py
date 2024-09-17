@@ -53,7 +53,7 @@ class UserLocation(models.Model):
 
 #Land titles models to store info
 class LandTitle(models.Model):
-    land_id = models.CharField(max_length=255, unique=True)
+    land_id = models.CharField(max_length=255, unique=True, primary_key=True)
     owner_name = models.CharField(max_length=255)
     owner_email = models.EmailField()
     land_location = models.CharField(max_length=255)

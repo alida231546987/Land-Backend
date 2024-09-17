@@ -4,7 +4,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Q
 from django.utils.translation import gettext as _
 
-from rest_framework import views, viewsets, status
+from rest_framework import views, viewsets, status, serializers as drf_serializers
 from rest_framework.authtoken.models import Token  # For token-based authentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -184,12 +184,80 @@ def create_user_account(username, password, first_name="", last_name="", email="
     return user
 
 
+class MultipleSerializerViewSet(viewsets.GenericViewSet):
+    serializer_classes = {
+
+    }
+    
+    def get_serializer_class(self):
+        if not isinstance(self.serializer_classes, dict):
+            raise ImproperlyConfigured(_("serializer_classes variable must be a dict mapping"))
+
+        if self.action in self.serializer_classes.keys():
+            return self.serializer_classes[self.action]
+        
+        return super().get_serializer_class()
 
 class OwnershipTransferViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.OwnershipTransferSerializer
     queryset = TransferOwnership.objects.all()
 
-    
+class LandTitleViewSet(viewsets.ModelViewSet, MultipleSerializerViewSet):
+    class LandTitleSerializer(drf_serializers.ModelSerializer):
+        class Meta:
+            model = LandTitle
+            fields = "__all__"
+
+    class UpdateCoordinateSerializer(drf_serializers.ModelSerializer):
+        class Meta:
+            model = LandTitle
+            fields = ["surface_area", "coordinates"]
+
+        def validate_coordinates(self, value):
+            """
+            Custom validation for the coordinates field.
+            Ensures it's a list of objects with latitude and longitude keys.
+            """
+            if value is None:
+                raise serializers.ValidationError("Coordinates cannot be null.")
+
+            if not isinstance(value, list):
+                raise serializers.ValidationError("Coordinates should be a list.")
+
+            for coordinate in value:
+                if not isinstance(coordinate, dict):
+                    raise serializers.ValidationError("Each coordinate should be an object.")
+                if 'latitude' not in coordinate or 'longitude' not in coordinate:
+                    raise serializers.ValidationError("Each coordinate must contain 'latitude' and 'longitude'.")
+                if not isinstance(coordinate['latitude'], (float, int)) or not isinstance(coordinate['longitude'], (float, int)):
+                    raise serializers.ValidationError("Latitude and longitude must be numbers.")
+            
+            return value
+
+    serializer_classes = {
+        'update_coordinates': UpdateCoordinateSerializer
+    }
+
+    serializer_class = LandTitleSerializer
+    queryset = LandTitle.objects.all()
+
+    @action(methods=['PATCH'], detail=True)
+    def update_coordinates(self, request, *args, **kwargs):
+        serializer = self.get_serializer_class()(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        data = serializer.validated_data
+        landtitle: LandTitle = self.get_object()
+
+        landtitle.surface_area = data['surface_area']
+        landtitle.coordinates = data['coordinates']
+
+        landtitle.save()
+
+        return Response(
+            data=self.serializer_class(landtitle).data
+        )
+
 # class FrontendAppView(TemplateView):      
 #     template_name = './landfrontend/index.html'
 

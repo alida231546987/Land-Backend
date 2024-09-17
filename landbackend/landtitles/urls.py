@@ -10,8 +10,7 @@ from .views import FileUploadViewSet
 
 from . import views  
 
-from .views import AuthViewSet, OwnershipTransferViewSet #, LoginView
-
+from .views import AuthViewSet, OwnershipTransferViewSet, LandTitleViewSet
 from .views import transfer_ownership
 
 urlpatterns = [
@@ -24,13 +23,10 @@ router = routers.DefaultRouter(trailing_slash=False)
 
 authentication_routes = router.register("api/accounts", AuthViewSet, basename='auth')
 
-ownership_transfer_routes = router.register("api/transfer-ownership", OwnershipTransferViewSet, basename='ownership-trans' )
+ownership_transfer_routes = router.register("api/transfer-ownership", OwnershipTransferViewSet, basename='ownership-transfer' )
 
-# router = DefaultRouter()
+landtitle_routes = router.register("api/landtitles", LandTitleViewSet, basename='landtitles')
 
-# router.register(r'transfer-ownership', OwnershipTransferViewSet)
-
-# router = DefaultRouter()
 router.register(r'file-upload', FileUploadViewSet, basename='file-upload')
 
 

@@ -151,8 +151,8 @@ function Dashboard() {
     const landId = document.getElementById('landid').value;
 
     try {
-      const response = await axios.post('http://localhost:8000/api/update_land_title/', {
-        land_id: landId,
+      const response = await axios.patch(`http://localhost:8000/api/landtitles/${landId}/update_coordinates`, {
+        // land_id: landId,
         surface_area: area,
         coordinates: coordinates
       });
