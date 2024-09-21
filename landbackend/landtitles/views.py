@@ -66,7 +66,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         # Fetch user's profile to get the role
         profile = Profile.objects.get(user=user)
-        role = profile.profession  # Assuming 'profession' field represents the role
+        role = profile.role  # Assuming 'profession' field represents the role
 
         data = serializers.AuthenticatedUserSerializer(user).data
         data['role'] = role  # Add role to the response

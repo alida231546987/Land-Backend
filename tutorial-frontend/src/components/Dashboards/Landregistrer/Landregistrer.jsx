@@ -3,7 +3,9 @@ import './landregistrer.css'; // Import the CSS file for styling
 import SignatureCanvas from 'react-signature-canvas';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { CertificateOfOwnership } from '../../PDFs/Certificate of ownership/Certificate';
-// import { analyticalslip } from '../../PDFs/Analyticslip/analyticslip';
+import { AnalyticalSlip } from '../../PDFs/Analyticslip/analyticslip.jsx';
+import { API_URL } from '../../../utils/constants.js';
+import axios from 'axios';
 // import { notarialdeed } from '../../PDFs/NotarialDeed/notarialdeed';
 
 function Dashboard() {
@@ -27,27 +29,70 @@ function Dashboard() {
     console.log(`The signature URL ${signatureRef.current.toDataURL()}`);
   };
 
+  const [landData, setLandData] = useState({
+    owner_name: "",
+    land_location: "",
+    land_size: ""
+  });
+  // State to manage transfer requests
+  const [requests, setRequests] = useState([]);
+  const [landId, setLandId] = useState("2222");
+
+  // State to manage selected document for PDF generation
+  const [selectedDocument, setSelectedDocument] = useState(<CertificateOfOwnership data={[{
+    Owner_name: "",
+    Location: "",
+    Size: ""
+  }]} />);
+
+  const [fileName, setFileName] = useState("certificate-of-ownership.pdf");
+  const [landTitle, setLandTitle] = useState(null);
+
   useEffect(() => {
     console.log("Signature changed, setting the selected document");
     setSelectedDocument(
       <CertificateOfOwnership data={[{
-        Owner_name: "Alida",
-        Location: "Mfou",
-        Size: 90000
+        Owner_name: landData.owner_name,  // Use 'data' here instead of 'request'
+        Location: landData.land_location,
+        Size: landData.land_size,
       }]} signature={signature} />
     )
   }, [signature]);
 
-  // State to manage transfer requests
-  const [requests, setRequests] = useState([]);
+  useEffect(() => {
+    if (landTitle) {
+      console.log(`landtitle changed to `, landTitle);
+      setSelectedDocument(
+        <CertificateOfOwnership data={[{
+          Owner_name: landTitle.owner_name,  // Use 'data' here instead of 'request'
+          Location: landTitle.land_location,
+          Size: landTitle.land_size,
+        }]} signature={signature} />
+      );
+    }
+  }, [landTitle]);
 
-  // State to manage selected document for PDF generation
-  const [selectedDocument, setSelectedDocument] = useState(<CertificateOfOwnership data={[{
-    Owner_name: "Alida",
-    Location: "Mfou",
-    Size: 90000
-  }]} />);
+  //Fetch Land Info for certificate of ownership
+  const fetchLandData = async (land_id) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/landtitles/${land_id}`);  // Ensure the correct endpoint
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();  // Ensure `data` contains owner_name, land_location, and land_size fields
 
+      // Assuming `data` is an object with owner_name, land_location, and land_size
+      setSelectedDocument(
+        <CertificateOfOwnership data={[{
+          Owner_name: landData.owner_name,  // Use 'data' here instead of 'request'
+          Location: landData.land_location,
+          Size: landData.land_size,
+        }]} signature={signature} />
+      );
+    } catch (error) {
+      console.error('Error fetching land data:', error);
+    }
+  };
   // Fetch transfer ownership requests
   useEffect(() => {
     const fetchRequests = async () => {
@@ -222,7 +267,16 @@ function Dashboard() {
               let value = e.target.value;
               switch (value) {
                 case "certificate":
-                  setSelectedDocument(<CertificateOfOwnership data={[]} signature={signature} />);
+                  setSelectedDocument(<CertificateOfOwnership data={[
+                    Owner_name = landData.owner_name,
+                    Location = landData.land_location,
+                    Size = landData.land_size,
+                  ]} signature={signature} />);
+                  setFileName("certificate-of-ownership.pdf");
+                  break;
+                case "analytical-slip":
+                  setSelectedDocument(<AnalyticalSlip data={[]} signature={signature} />);
+                  setFileName("analytical-slip.pdf");
                   break;
                 // Handle other PDF types
               }
@@ -235,7 +289,7 @@ function Dashboard() {
             </select>
 
             <label htmlFor="land-id">Land ID:</label>
-            <input type="text" id="land-id" placeholder="Enter Land ID" />
+            <input type="text" id="land-id" placeholder="Enter Land ID" value={landId} onChange={(e) => setLandId(e.target.value)} />
 
             <label htmlFor="owner-name">Owner's Name:</label>
             <input type="text" id="owner-name" placeholder="Enter Owner's Name" />
@@ -248,10 +302,26 @@ function Dashboard() {
             <button type="button" onClick={saveSignature}>Save Signature</button>
             <button type="button" onClick={clearSignature}>Clear Signature</button>
 
+            <button className='btn'
+              onClick={() => {
+                axios.get(`${API_URL}/api/landtitles/${landId}`)
+                  .then((response) => {
+                    console.log('Data gotten from the server');
+                    console.log(response.data);
+
+                    setLandTitle(response.data);
+                  })
+                  .catch((error) => {
+                    console.log(`Error getting land title`);
+                    console.log(error);
+                  })
+              }}
+            >Get data</button>
+
             <button className="btn btn-add">
               <PDFDownloadLink
                 document={selectedDocument}
-                fileName="certificate-of-ownership.pdf"
+                fileName={fileName}
               >
                 {({ loading }) =>
                   loading ? 'Preparing document...' : 'Generate PDF'

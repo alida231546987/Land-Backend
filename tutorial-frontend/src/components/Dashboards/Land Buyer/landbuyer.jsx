@@ -14,6 +14,7 @@ function Dashboard() {
    const [messages, setMessages] = useState([]);  // To store messages
    const [newMessage, setNewMessage] = useState("");  // To type a new message
    const [file, setFile] = useState(null);  // To store the selected file
+   const[handleSendMessage,sethandleSendMessage] =useState([]);
  
 
   // State to manage signature pad

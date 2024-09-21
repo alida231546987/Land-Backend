@@ -18,6 +18,7 @@ import Landbuyer from "./components/Dashboards/Land Buyer/landbuyer";
 import Geoapi from "./components/Geolocalisation/geoapi";
 import Certificate from "./components/PDFs/Certificate of ownership/Certificate"
 import Landing from "./components/Landing";
+import Map from "./components/Map Api/map";
 
 //import {Companies,Contact,Footer,GetStarted,Header,Hero,Residencies,Value as Landing} from "./components/Landing";
 
@@ -47,7 +48,7 @@ function App() {
                 <Route path ="/landowner" element={<Landowner />}/>
                 <Route path ="/landbuyer" element={<Landbuyer />}/>
                 <Route path ="/" element={<Landing />}/>
-
+                <Route path ="/map" element={<Map />}/>
 
                 <Route path ="/geoapi" element={<Geoapi />}/>
                 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Borders</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4; /* Background color for contrast */
+        }
+        .Title{
+            font-weight: 900;
+        }
+        .border-frame {
+            border: 5px solid black; /* Change this to apply different border styles */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional shadow effect */
+            width: 80%;
+            max-width: 1200px;
+            border-radius: 10px; /* Rounded corners */
+            position: relative; /* Required for gradient border */
+            overflow: hidden; /* Ensures gradient border doesn't overflow */
+        }
+        .border-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            /*background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); /* Gradient border */
+            z-index: -1; /* Place it behind the content */
+            border-radius: 15px; /* Match with container border-radius */
+        }
+    </style>
+</head>
+<body>
+    <div class="border-frame">
+        <div class="Header">
+            <p style="font-size: 50px;">Land Id ___________</p><br>
+            <center style="font-size: 50px;">
+            <p style="font-weight: 900;">LAND DESCRIPTION</p><br>
+            </center>
+            <p style="font-size: 20px;">Nature of the Property___________</p><br>
+            <p style="font-size: 20px;">Land Size__________</p><br>
+            <p style="font-size: 20px;">Land Location_______</p><br>
+            <p style="font-size: 20px;">Coordinates_________</p><br>
+            <h3>Land Owner's Information</h3><br>
+            <p style="font-size: 20px;">Full Name _________</p><br>
+            <p style="font-size: 20px;">Profession___________</p><br>
+            <p style="font-size: 20px;">Adress_________</p><br>
+            <p style="font-size: 20px;">Date Of Birth_________</p><br>
+            <p style="font-size: 20px;">Place Of Birth_____________</p><br>
+            <p style="font-size: 20px;">Father's Name________</p><br>
+            <p style="font-size: 20px;">Mother's Name_________</p><br>
+            <p style="font-size: 20px;">Delivery date___________</p><br>
+
+            <p>Signature</p>
+        </div>
+        <img src="../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png" style="width: 400px;padding-left: 650px";>
+        </div>
+    </div>
+</body>
+</html>

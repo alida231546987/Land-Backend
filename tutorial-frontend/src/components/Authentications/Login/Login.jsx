@@ -9,8 +9,8 @@ const API_URL = `http://localhost:8000`;
 
 const Login = () => {
     const navigate = useNavigate();
-    const [username, setUsername] = useState("prince");
-    const [password, setPassword] = useState("heisenberg");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
 
     function login(e) {
@@ -35,23 +35,23 @@ const Login = () => {
 
                 const { role } = data;
                 switch (role) {
-                    case 'land_surveyor':
-                        navigate('/Landsurveyor');
+                    case 'landsurveyor':
+                        navigate('/landsurveyor');
                         break;
-                    case 'land_registrar':
-                        navigate('/Landregistrer');
+                    case 'landregistrer':
+                        navigate('/landregistrer');
                         break;
                     case 'land_buyer':
                         navigate('/landbuyer');
                         break;
                     case 'land_owner':
-                        navigate('/Landowner');
+                        navigate('/landowner');
                         break;
                     case 'notary':
-                        navigate('/Notary');
+                        navigate('/notary');
                         break;
                     default:
-                        navigate('/default-dashboard');
+                        navigate('/');
                 }
             } else {
                 setError('Login failed. Please check your credentials.');

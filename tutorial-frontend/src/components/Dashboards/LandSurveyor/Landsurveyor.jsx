@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './landsurveyor.css';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 import geolib from 'geolib';
 import { getDistance, getAreaOfPolygon } from 'geolib';
-
 
 function Dashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -13,66 +12,8 @@ function Dashboard() {
   const [isRecording, setIsRecording] = useState(false);
   const [watchId, setWatchId] = useState(null);
 
-  const [location, setLocation] = useState(null);
-  const prevLocationRef = useRef(null); 
-
-
-  // useEffect(() => {
-  //   let watchId;
-
-  //   // Function to get the user's location
-  //   const getLocation = () => {
-  //     if (navigator.geolocation) {
-  //       watchId = navigator.geolocation.watchPosition(
-  //         (position) => {
-  //           const { latitude, longitude } = position.coords;
-  //           const newLocation = { latitude, longitude };
-
-  //           // Retrieve previous location from the useRef
-  //           const prevLocation = prevLocationRef.current;
-
-  //           if (prevLocation && latitude === prevLocation.latitude && longitude === prevLocation.longitude) {
-  //             console.log(`Location didn't change`);
-  //           } else {
-  //             console.log(`Location changed`);
-  //             console.log(`Old location`, location);
-  //             console.log('New location', {latitude, longitude});
-  //           }
-
-  //           setLocation({...newLocation});
-  //           prevLocationRef.current = newLocation;
-  //         },
-  //         (err) => {
-  //           console.log(`Error in the useEffect`);
-  //           console.error(err);
-  //         },
-  //         {
-  //           enableHighAccuracy: false, // High accuracy mode for better precision
-  //           timeout: 5000, // Maximum wait time for a location response
-  //           maximumAge: 0 // No cache, always request new location
-  //         }
-  //       );
-  //     } else {
-  //       setError('Geolocation is not supported by this browser.');
-  //     }
-  //   };
-
-  //   // Get location every second
-  //   const intervalId = setInterval(() => {
-  //     getLocation();
-  //   }, 1000); // 1 second interval
-
-  //   // Cleanup: clear the interval and stop watching position when component unmounts
-  //   return () => {
-  //     clearInterval(intervalId);
-  //     if (watchId) {
-  //       navigator.geolocation.clearWatch(watchId);
-  //     }
-  //   };
-  // }, []);
-
-  // Set minimal change threshold to 0 for very small movements
-  const minimalChangeThreshold = 0; // Allow recording of any positional change
+  // Set minimal change threshold to 1 centimeter (0.01 meters)
+  const minimalChangeThreshold = 0.01; // 1 centimeter
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -89,45 +30,43 @@ function Dashboard() {
   };
 
   const addRow = () => {
-    console.log("Adding row to the locations table.")
+    console.log("Adding row to the locations table.");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           const newCoordinate = { latitude, longitude };
+          console.log('New coordinate:', newCoordinate);
 
           // Check if the new coordinate is different from the last one
           const lastCoordinate = rows[rows.length - 1];
-          try {
-            if (!lastCoordinate || getDistance(lastCoordinate, newCoordinate) > minimalChangeThreshold) {
-              setRows([...rows, newCoordinate]);
-            }
-          } catch (error) {
-            console.error(error);
-
-            console.log(`Adding row manually`)
-            const lastCoordinate = rows[rows.length - 1];
-
-            const newCoordinate = { latitude: lastCoordinate.latitude - 0.002, longitude: lastCoordinate.longitude - 0.0002 };
+          if (!lastCoordinate) {
             setRows([...rows, newCoordinate]);
+          } else {
+            const distance = getDistance(
+              { latitude: lastCoordinate.latitude, longitude: lastCoordinate.longitude },
+              { latitude: newCoordinate.latitude, longitude: newCoordinate.longitude }
+            );
+            console.log(`Distance from last coordinate: ${distance} meters`);
+            if (distance >= minimalChangeThreshold) {
+              setRows([...rows, newCoordinate]);
+            } else {
+              console.log('Movement less than minimal change threshold, not adding coordinate.');
+            }
           }
         },
         (error) => {
-          console.error(error);
-          console.log(`Adding row manually`)
-          const lastCoordinate = rows[rows.length - 1];
-
-          const newCoordinate = { latitude: lastCoordinate.latitude - 0.002, longitude: lastCoordinate.longitude - 0.0002 };
-          setRows([...rows, newCoordinate]);
+          alert('Error fetching location: ' + error.message);
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000, // Reduce timeout to get more frequent updates
+          timeout: Infinity,
           maximumAge: 0,
         }
       );
     } else {
       console.error('Geolocation is not supported by this browser.');
+      alert('Geolocation is not supported by your browser.');
     }
   };
 
@@ -147,12 +86,10 @@ function Dashboard() {
     console.log('Calculated area:', area);
     setSurfaceArea(area);
 
-    // Get the land ID from input
     const landId = document.getElementById('landid').value;
 
     try {
       const response = await axios.patch(`http://localhost:8000/api/landtitles/${landId}/update_coordinates`, {
-        // land_id: landId,
         surface_area: area,
         coordinates: coordinates
       });
@@ -172,20 +109,32 @@ function Dashboard() {
         (position) => {
           const { latitude, longitude } = position.coords;
           const newCoordinate = { latitude, longitude };
+          console.log('New coordinate:', newCoordinate);
 
-          // Check if the new coordinate is different from the last one
           const lastCoordinate = rows[rows.length - 1];
-          if (isRecording && (!lastCoordinate || getDistance(lastCoordinate, newCoordinate) > minimalChangeThreshold)) {
+          if (!lastCoordinate) {
             setRows([...rows, newCoordinate]);
+          } else {
+            const distance = getDistance(
+              { latitude: lastCoordinate.latitude, longitude: lastCoordinate.longitude },
+              { latitude: newCoordinate.latitude, longitude: newCoordinate.longitude }
+            );
+            console.log(`Distance from last coordinate: ${distance} meters`);
+            if (distance >= minimalChangeThreshold) {
+              setRows(prevRows => [...prevRows, newCoordinate]);
+            } else {
+              console.log('Movement less than minimal change threshold, not adding coordinate.');
+            }
           }
         },
         (error) => {
-          console.error(error);
+          console.error("Error while recording location:", error);
         },
         {
-          enableHighAccuracy: false,
-          timeout: 5000, // Reduce timeout to get more frequent updates
+          enableHighAccuracy: true,
+          timeout: Infinity,
           maximumAge: 0,
+          distanceFilter: 0, // Try to get updates for any movement
         }
       );
       setWatchId(id);
@@ -211,8 +160,6 @@ function Dashboard() {
     };
   }, [watchId]);
 
-  console.log('Surface Area State:', surfaceArea);
-
   return (
     <div className="dashboard">
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`} id="sidebar">
@@ -237,7 +184,6 @@ function Dashboard() {
         <div className={`content ${activeSection === 'RecordCoordinates' ? 'active' : ''}`} id="RecordCoordinates">
           <h2>Record Coordinates</h2>
           <div className="pdf-form">
-            {/* Form Inputs */}
             <label htmlFor="landid">Land ID:</label>
             <input type="text" id="landid" placeholder="Enter Land Title ID" />
             <label htmlFor="location">Location:</label>
@@ -278,9 +224,9 @@ function Dashboard() {
               </tbody>
             </table>
 
-            <button className="btn btn-start" onClick={startRecording}>Start Recording</button>
-            <button className="btn btn-stop" onClick={stopRecording}>Stop Recording</button>
-            <button className="btn btn-add" onClick={addRow}>Add New Row</button>
+            <button className="btn btn-start" onClick={startRecording} disabled={isRecording}>Start Recording</button>
+            <button className="btn btn-stop" onClick={stopRecording} disabled={!isRecording}>Stop Recording</button>
+            <button className="btn btn-add" onClick={addRow}>Add Current Position</button>
             <button className="btn btn-calculate" onClick={calculateAndSendSurfaceArea}>Calculate Surface Area</button>
 
             <div className="surface-area">

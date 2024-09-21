@@ -27,14 +27,14 @@ class CustomUser(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    username = models.CharField(max_length=15)
-    cniId = models.CharField(max_length=15)
-    email = models.CharField(max_length=15)
-    telephone = models.CharField(max_length=15)
-    role = models.CharField(max_length=15)
-    profession= models.CharField(max_length=15)
-    gender = models.CharField(max_length=15)
-    password = models.CharField(max_length=15)
+    username = models.CharField(max_length=150)
+    cniId = models.CharField(max_length=150)
+    email = models.EmailField()
+    telephone = models.CharField(max_length=150)
+    role = models.CharField(max_length=150)
+    profession= models.CharField(max_length=150)
+    gender = models.CharField(max_length=150)
+    password = models.CharField(max_length=150)
     # Add other fields as needed
 
     def __str__(self):

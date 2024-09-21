@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import styles from './analyticslip.js'; // Import your styles
+//import landImage from "../../../assets/Land registrer.png";
+
+
+
 
 export const AnalyticalSlip = () => {
   // State for dynamic data
@@ -24,14 +28,79 @@ export const AnalyticalSlip = () => {
     quittanceNo: ''
   });
 
+  const [propertyDetails, setPropertyDetails] = useState({
+    nature: "Natural",
+    size: 3434454,
+    location: "Mbanga",
+    coordinates: {
+      latitude: 5.95959,
+      longitude: 4.55545
+    }
+  })
+
+  const [ownerDetails, setOwnerDetails] = useState({
+    fullName: "Super Makia",
+    profession: "Arm Wrestler",
+    address: "Makia Compound, Makia",
+    dob: "1999-01-23",
+    fatherName: "Papa Makia",
+    pob: "Makia Compound",
+    motherName: "Mama Makia",
+    deliveryDate: "2022-09-12"
+  })
   return (
     <Document>
+      <Page style={styles.page1}>
+        <   View style={styles.borderFrame}>
+          <View style={styles.innerFrame} />
+          <View>
+            <Text style={styles.header}>REPUBLIQUE DU CAMEROON</Text>
+            <Text style={styles.header}>Paix-Travail-Patrie</Text>
+            <Text style={styles.header}>REPUBLIC OF CAMEROON</Text>
+            <Text style={styles.header}>Peace-Work-FatherLand</Text>
+            <Text style={styles.header}>CONSERVATION FONCIER DE</Text>
+            <Text style={styles.header}>REGISTRY OF LAND PROPERTY OF______________</Text>
+            <Text style={styles.title}>COPIE DU TITRE FONCIER</Text>
+            <Text style={styles.title}>COPY OF LAND CERTIFICATE</Text>
+            {/* <Image
+          style={styles.image}
+          src="../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png"
+        /> */}
+            <Text style={styles.number}>Land Title Number {data.landId}</Text>
+          </View>
+        </View>
+      </Page>
+      <Page style={styles.page2}>
+        <View style={styles.borderFrame}>
+          <Text style={styles.header}>Land Id: {data.landId || '___________'}</Text>
+          <Text style={styles.title}>LAND DESCRIPTION</Text>
+          <Text style={styles.propertyInfo}>Nature of the Property: {propertyDetails.nature || '___________'}</Text>
+          <Text style={styles.propertyInfo}>Land Size: {propertyDetails.size || '__________'}</Text>
+          <Text style={styles.propertyInfo}>Land Location: {propertyDetails.location || '_______'}</Text>
+          <Text style={styles.propertyInfo}>Coordinates: {propertyDetails.coordinates ?  `lat: ${propertyDetails.coordinates.latitude}, long: ${propertyDetails.coordinates.longitude}` :'_________'}</Text>
+
+          <Text style={styles.ownerInfoHeader}>Land Owner's Information</Text>
+          <Text style={styles.propertyInfo}>Full Name: {ownerDetails.fullName || '___________'}</Text>
+          <Text style={styles.propertyInfo}>Profession: {ownerDetails.profession || '___________'}</Text>
+          <Text style={styles.propertyInfo}>Address: {ownerDetails.address || '_________'}</Text>
+          <Text style={styles.propertyInfo}>Date Of Birth: {ownerDetails.dob || '_________'}</Text>
+          <Text style={styles.propertyInfo}>Place Of Birth: {ownerDetails.pob || '_____________'}</Text>
+          <Text style={styles.propertyInfo}>Father's Name: {ownerDetails.fatherName || '________'}</Text>
+          <Text style={styles.propertyInfo}>Mother's Name: {ownerDetails.motherName || '_________'}</Text>
+          <Text style={styles.propertyInfo}>Delivery date: {ownerDetails.deliveryDate || '___________'}</Text>
+
+          <Text style={styles.signature}>Signature</Text>
+
+          {/* <Image style={styles.image} src={landImage || "../../../assets/Land_registrer-removebg-preview.png"} /> */}
+
+        </View>
+      </Page>
+      <Page></Page>
       <Page style={styles.container}>
-        {/* Header */}
         <View style={styles.row}>
           <View style={styles.col}>
             <Text>
-              <b>B.E.V OFFICE OF</b>
+              <Text>B.E.V OFFICE OF</Text>
               <Text>_________________</Text>
               <Text>OF</Text>
               <Text>Vol</Text>
@@ -40,7 +109,7 @@ export const AnalyticalSlip = () => {
           </View>
           <View style={styles.col}>
             <Text>
-              <b>REPUBLIC DU CAMEROUN</b>
+              <Text>REPUBLIC DU CAMEROUN</Text>
               <Text>REPUBLIC OF CAMEROON</Text>
               <Text>_______________</Text>
               <Text>CONSERVATION FONCIERE DU MFOUNDI</Text>
@@ -50,29 +119,27 @@ export const AnalyticalSlip = () => {
               <Text>REGISTER OF PROPERTY of MFOUNDI</Text>
               <Text>______________</Text>
               <Text>Titre Foncier No</Text>
-              <Text><i>Land Certificate</i> No {data.landId}</Text>
+              <Text>Land Certificate No {data.landId}</Text>
             </Text>
           </View>
           <View style={styles.col}>
             <Text>
-              <b>ANALYTIC SLIP No</b>
+              <Text>ANALYTIC SLIP No</Text>
               <Text>_______________</Text>
             </Text>
           </View>
         </View>
 
-        {/* Title */}
         <View style={styles.row}>
           <Text style={styles.title}>
-            <b>BORDEREAU ANALYTIQUE</b>
-            <i> (Abstract of the certificate)</i>
+            BORDEREAU ANALYTIQUE
+             (Abstract of the certificate)
           </Text>
           <Text>
-            <h5>Mention a la section <i>(Referred to in section)</i>{' '}</h5>
+            Mention a la section (Referred to in section){' '}
           </Text>
         </View>
 
-        {/* Body */}
         <Text>
           Following the acte No 6175 of the 31/01/2007 received by <Text>{data.notaryName}</Text>, registered at Yaounde CPIC 1(Civil acte) on the <Text>{data.date}</Text>, Volume 10 Folio 81 Case and Bd 226/4.
           <br />
@@ -82,16 +149,15 @@ export const AnalyticalSlip = () => {
           All collective owners of the land certificates No <Text>{data.landId}</Text> below.
           On a term of a procuration which was given by them following the acte received by <Text>{data.notaryName}</Text> a Notary in Yaounde <Text>{data.date}</Text> registered in Yaounde IV (civil act)
           volume "", Foliio "", Case and Bd 1254/1
-          All these people stated above sold this piece of Land for the amount of <b>{data.price}</b>
+          All these people stated above sold this piece of Land for the amount of {data.price}
           <br />
           <br />
           To <Text>{data.newOwner}</Text>, <Text>{data.newOwnerProfession}</Text>, <Text>{data.newOwnerLocation}</Text>, born on <Text>{data.newOwnerDob}</Text> at <Text>{data.newOwnerBirthPlace}</Text>, son/daughter of <Text>{data.motherName}</Text> and <Text>{data.fatherName}</Text>, their nationality <Text>{data.nationality}</Text>.
         </Text>
 
-        {/* Footer */}
         <View style={styles.row}>
           <Text>
-            Price: <b>{data.price}</b>
+            Price: {data.price}
           </Text>
           <Text>
             Quittance: <Text>{data.quittanceNo}</Text>
@@ -99,6 +165,7 @@ export const AnalyticalSlip = () => {
           <Text>
             Date: {data.date}
           </Text>
+          {/* <Image style={styles.image} src={landImage || "../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png"} /> */}
         </View>
       </Page>
     </Document>

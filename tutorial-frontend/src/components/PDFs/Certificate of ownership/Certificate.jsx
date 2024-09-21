@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { Document, Page, Text, View, Image, PDFDownloadLink } from '@react-pdf/renderer';
 import { StyleSheet } from '@react-pdf/renderer';
+import landImage from "../../../assets/Land registrer.png";
 
 // Define styles for the PDF document
 const styles = StyleSheet.create({
@@ -25,8 +26,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    width: 250,
-    marginTop: 20,
+    width: 100,
+    //marginTop: 20,
   },
   title: {
     fontSize: 16,
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     bottom: 30, // Adjust as needed
     left: 0,
     right: 0,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   signature: {
     borderTop: '1px solid black',
@@ -59,8 +60,13 @@ const styles = StyleSheet.create({
 // PDF Document Component
 export const CertificateOfOwnership = ({ data, signature }) => {
   useEffect(() => {
-    console.log("Rendering CertifOfOwnership with signature: ");
-    console.log(signature);
+    if (signature)
+      console.log("Rendering CertifOfOwnership with signature: ");
+
+    if (data){
+      console.log("Rendering COO with data")
+      console.log(data)
+    }
   }, []);
   return (
     <Document>
@@ -108,11 +114,11 @@ export const CertificateOfOwnership = ({ data, signature }) => {
 
         {/* Dynamic Data Section */}
         {data.map((item, index) => (
-          <View key={index} style={styles.label}>
+          <View style={styles.label}>
             <Text>Owner Name: {item.Owner_name}</Text>
             <Text>Location: {item.Location}</Text>
             <Text>Land Size: {item.Size}</Text>
-          </View>
+        </View>
         ))}
 
         {/* Footer */}
@@ -122,6 +128,7 @@ export const CertificateOfOwnership = ({ data, signature }) => {
           This so-called Land title on which a duplicatum <Text style={styles.bold}>No1</Text> has been created and delivered on this has been withdrawn based on the rigde that stipulates that <Text style={styles.bold}>No 001599/Y.7/MINDCAF/SG/D6 of the 17/9/2023</Text> of MINDCAF concerning the withdrawal of land titles then the establishment of a new land title on the profit of [Name of the new land owner] is a judiciary prenotation following the order <Text style={styles.bold}>No256/2015</Text> of the TPI of the Division of MFOU following the request of [New Land owner name] in accordance with the inscriptions of the Land Book of the Land registrars office establish due to the demand of [New land owner] for information.
         </Text>
         <Text>En foi de quoi the present certificate is been established to serve and valorize its right.</Text>
+        <Image style={styles.image} src={landImage || "../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png"} />
 
         {/* Date and other details */}
         <View style={styles.row}>
@@ -129,7 +136,6 @@ export const CertificateOfOwnership = ({ data, signature }) => {
           <Text>ID Num: [Land ID]</Text>
           <Text>Validity: [Validity Period]</Text>
         </View>
-
         {/* Signature */}
         {signature && (
           <View style={styles.signatureWrapper}>
