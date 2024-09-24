@@ -105,7 +105,6 @@ function Dashboard() {
 
         <div className={`content ${activeSection === 'messages' ? 'active' : ''}`} id="messages">
           <h2>Messages</h2>
-          <p>This is the messages section content.</p>
         </div>
 
         <div className={`content ${activeSection === 'notifications' ? 'active' : ''}`} id="notifications">

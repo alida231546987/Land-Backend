@@ -3,13 +3,12 @@ import axios from 'axios';
 import SignatureCanvas from "react-signature-canvas";
 import { saveAs } from 'file-saver'; // Importing file-saver
 import './landowner.css'; // Importing the CSS file for styling
+import { API_URL } from '../../../utils/constants';
 
 function Dashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [recipient, setRecipient] = useState(''); // Selected recipient
   const [users, setUsers] = useState([]); // Users state
-  const [messages, setMessages] = useState([]); // Messages state
-  const [message, setMessage] = useState(''); // Single message state
   const [transferDetails, setTransferDetails] = useState({
     landId: '',
     presentLandSize: '',
@@ -27,81 +26,57 @@ function Dashboard() {
   const [name, setName] = useState(''); // Name for the signature input
   const sigCanvas = useRef({}); // Ref for signature pad
   const [files, setFiles] = useState([]); // Files state
+  const [destinationDashboard, setDestinationDashboard] = useState(''); // Define state for destinationDashboard
+  const [handleUplaod, setHandleUpload] = useState(''); // Define state for destinationDashboard
+  const [user, setUser] = useState(null);
 
+  const [file, setFile] = useState(null);
+
+  // getting list of users from the backend
   useEffect(() => {
-    if (recipient) {
-      const ws = new WebSocket(`ws://localhost:8000/ws/chat/${recipient}/`);
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: data.message, sender: data.sender },
-        ]);
-      };
-
-      return () => {
-        ws.close();
-      };
-    }
-  }, [recipient]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await axios.get('http://localhost:8000/api/users/');
-      setUsers(response.data);
-    };
-    fetchUsers();
+    axios.get(`${API_URL}/api/users`)
+    .then((response) => setUsers(response.data))
+    .catch((error) => {
+      console.log("Error getting users from DB");
+    })
   }, []);
-
-  const sendMessage = () => {
-    if (message.trim() && recipient) {
-      const socket = new WebSocket(`ws://localhost:8000/ws/chat/${recipient}/`);
-      socket.onopen = () => {
-        socket.send(
-          JSON.stringify({
-            message: message,
-            recipient: recipient,
-          })
-        );
-        setMessage('');
-        socket.close();
-      };
-    }
-  };
-
-  const sendFile = async (file) => {
-    if (recipient) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('recipient', recipient); // Add recipient information
-
-      const response = await fetch('/api/send-file/', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        alert('File sent successfully!');
-        fetchFiles(); // Refresh file list
-      } else {
-        alert('Error sending file');
-      }
-    } else {
-      alert('Please select a recipient first.');
-    }
-  };
-
-  const fetchFiles = async () => {
-    if (recipient) {
-      const response = await axios.get(`http://localhost:8000/api/files/?recipient=${recipient}`);
-      setFiles(response.data);
-    }
-  };
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  function FileUpload() {
+    const [destinationDashboard, setDestinationDashboard] = useState('');
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('destination_dashboard', destinationDashboard);
+
+    const response = await fetch('http://localhost:8000/api/pdfs/', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    console.log("Request completed")
+    console.log(data)
+    alert("File sent successfully");
+  };
+
+  const fetchFiles = async () => {
+    axios.get(`${API_URL}/api/pdfs`)
+    .then((response) => setFiles(response.data))
+    .catch((error) => {
+      console.log("Error getting files from DB");
+    })
+  }
 
   const showContent = (section) => {
     setActiveSection(section);
@@ -215,7 +190,7 @@ function Dashboard() {
           </li>
           <li className={activeSection === 'files' ? 'active' : ''}>
             <a href="#" onClick={() => showContent('files')}>
-              <i className="fa fa-file"></i> Files
+              <i className="fa fa-file"></i> Sent Files
             </a>
           </li>
           <li className={activeSection === 'notifications' ? 'active' : ''}>
@@ -311,67 +286,27 @@ function Dashboard() {
         {/* Messages Section */}
         {activeSection === 'messages' && (
           <div className="content active" id="messages">
-            <h2>Messages</h2>
-            <div>
-              <select onChange={(e) => setRecipient(e.target.value)} value={recipient}>
-                <option value="">Select recipient</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.username}
-                  </option>
-                ))}
-              </select>
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type your message here"
-              />
-              <button onClick={sendMessage}>Send</button>
-            </div>
-            <div className="messages-list">
-              {messages.map((msg, index) => (
-                <div key={index}>
-                  <strong>{msg.sender}: </strong>
-                  <p>{msg.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+            <input type="file" onChange={handleFileChange} />
+            <input
+              type="text"
+              placeholder="Destination Dashboard"
+              value={destinationDashboard}
+              onChange={(e) => setDestinationDashboard(e.target.value)}
+            />
 
-        {/* Files Section */}
-        {activeSection === 'files' && (
-          <div className="content active" id="files">
-            <h2>Uploaded Files</h2>
             <div>
-              <select onChange={(e) => setRecipient(e.target.value)} value={recipient}>
-                <option value="">Select recipient</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.username}
-                  </option>
-                ))}
+              <label htmlFor="">User</label>
+              <select value={user} onChange={(e) => setUser(e.target.value)}>
+                <option value={null}>---</option>
+                {
+                  users.map((u, index) => <option value={u.id} key={index}>{u.username}</option>)
+                }
               </select>
-              <input
-                type="file"
-                onChange={(e) => {
-                  if (e.target.files.length > 0) {
-                    sendFile(e.target.files[0]);
-                  }
-                }}
-              />
-              <ul>
-                {files.map((file, index) => (
-                  <li key={index}>
-                    <a href={`http://localhost:8000${file.file_url}`} download>
-                      {file.file_name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
             </div>
+            <button onClick={handleUpload}>Upload PDF</button>
           </div>
-        )}
+        )};
+
 
         {/* Notifications Section */}
         {activeSection === 'notifications' && (

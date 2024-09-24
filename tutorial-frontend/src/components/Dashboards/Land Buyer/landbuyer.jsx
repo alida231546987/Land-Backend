@@ -7,15 +7,10 @@ function Dashboard() {
   // State to manage the sidebar collapsed state
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  const [dashboard, setDashboard] = useState("");
+
   // State to manage which content section is active
   const [activeSection, setActiveSection] = useState('home');
-
-   // Messages section 1
-   const [messages, setMessages] = useState([]);  // To store messages
-   const [newMessage, setNewMessage] = useState("");  // To type a new message
-   const [file, setFile] = useState(null);  // To store the selected file
-   const[handleSendMessage,sethandleSendMessage] =useState([]);
- 
 
   // State to manage signature pad
   const sigCanvas = useRef({});
@@ -140,40 +135,7 @@ function Dashboard() {
 
         <div className={`content ${activeSection === 'messages' ? 'active' : ''}`} id="messages">
         <h2>Messages</h2>
-
-          {/* Display messages */}
-          <div className="message-list">
-            {messages.map((msg, index) => (
-              <div key={index} className="message-item">
-                <p>{msg.text}</p>
-                {msg.fileUrl && (
-                  <a href={msg.fileUrl} download>
-                    Download File
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Form for sending new message */}
-          <form onSubmit={handleSendMessage}>
-            <label htmlFor="newMessage">Message:</label>
-            <input
-              type="text"
-              id="newMessage"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message"
-            />
-            
-            <label htmlFor="fileUpload">Attach a file (optional):</label>
-            <input type="file" id="fileUpload" onChange={(e) => setFile(e.target.files[0])} />
-            
-            <button type="submit">Send Message</button>
-          </form>
         </div>
-
-
 
         <div className={`content ${activeSection === 'notifications' ? 'active' : ''}`} id="notifications">
           <h2>Notifications</h2>

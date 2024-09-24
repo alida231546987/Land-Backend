@@ -32,9 +32,7 @@ from django.http.response import Http404
 #For files uplaod
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
-from rest_framework import status
-from .models import FileUpload
-from .serializers import FileUploadSerializer
+from rest_framework import status, permissions
 
 #For land titles
 from .models import LandTitle, TransferOwnership
@@ -42,7 +40,14 @@ from .serializers import OwnershipTransferSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import LandTitleSerializer
+from .serializers import LandTitleSerializer, PDFFileSerializer
+
+#Files Shared
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+from .models import PDFFile
+
+User = get_user_model()
 
 
 class AuthViewSet(viewsets.GenericViewSet):
@@ -136,7 +141,17 @@ class AuthViewSet(viewsets.GenericViewSet):
         
         return super().get_serializer_class()
 
-User = get_user_model()
+
+class UserViewSet(viewsets.ModelViewSet):
+    class UserSerializer(drf_serializers.ModelSerializer):
+        class Meta:
+            model = User
+            fields = "__all__"
+    
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    # permission_classes = [permissions.ReadOnly]
+    
 
 @api_view(['POST'])
 def signup(request):
@@ -338,24 +353,36 @@ def transfer_ownership(request):
 class TransferOwnershipRequestViewSet(viewsets.ModelViewSet):
     queryset = TransferOwnership.objects.all()
     serializer_class = OwnershipTransferSerializer
-
-
-
-#For files uplaod and sharing
-
-class FileUploadViewSet(viewsets.ViewSet):
-    parser_classes = (MultiPartParser, FormParser)
-
-    def create(self, request):
-        file_serializer = FileUploadSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+class PDFFileViewSet(viewsets.ModelViewSet):
+    queryset = PDFFile.objects.all()
+    serializer_class = PDFFileSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        
+        if "user" in request.GET:
+            queryset = queryset.filter(recipient__id=request.GET['user'])
 
-# views.py api end point to retrieve files
-class FileRetrieveViewSet(viewsets.ModelViewSet):
-    queryset = FileUpload.objects.all()
-    serializer_class = FileUploadSerializer
+        data = self.serializer_class(queryset, many=True).data
+        
+        return Response(data=data)
+
+#Files Sharing
+# @csrf_exempt
+# def upload_pdf(request):
+#     if request.method == 'POST':
+#         file = request.FILES['file']
+#         dashboard = request.POST.get('destination_dashboard')
+#         pdf = PDFFile(file=file, destination_dashboard=dashboard)
+#         pdf.save()
+#         return JsonResponse({'message': 'File uploaded successfully'})
+
+# def fetch_pdfs(request, dashboard):
+#     pdf_files = PDFFile.objects.filter(destination_dashboard=dashboard)
+#     pdf_list = [{'file': pdf.file.url, 'uploaded_at': pdf.uploaded_at} for pdf in pdf_files]
+#     return JsonResponse(pdf_list, safe=False)
+
+
+
 

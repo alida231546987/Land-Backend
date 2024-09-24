@@ -3,6 +3,7 @@ import './landsurveyor.css';
 import axios from 'axios';
 import geolib from 'geolib';
 import { getDistance, getAreaOfPolygon } from 'geolib';
+import { API_URL } from '../../../utils/constants.js';
 
 function Dashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -11,6 +12,13 @@ function Dashboard() {
   const [surfaceArea, setSurfaceArea] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [watchId, setWatchId] = useState(null);
+  const [files, setFiles] = useState([]); // Files state
+  const [destinationDashboard, setDestinationDashboard] = useState(''); // Define state for destinationDashboard
+  const [handleUplaod, setHandleUpload] = useState(''); // Define state for destinationDashboard
+  const [users, setUser] = useState(null);
+  const [user, setUsers] = useState(null);
+
+  const [file, setFile] = useState(null);
 
   // Set minimal change threshold to 1 centimeter (0.01 meters)
   const minimalChangeThreshold = 0.01; // 1 centimeter
@@ -19,9 +27,59 @@ function Dashboard() {
     setIsCollapsed(!isCollapsed);
   };
 
+   // getting list of users from the backend
+   useEffect(() => {
+    axios.get(`${API_URL}/api/users`)
+    .then((response) => setUsers(response.data))
+    .catch((error) => {
+      console.log("Error getting users from DB");
+    })
+  }, []);
+
+  //Files sharing aadn received
+  function FileUpload() {
+    const [destinationDashboard, setDestinationDashboard] = useState('');
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('destination_dashboard', destinationDashboard);
+
+    const response = await fetch('http://localhost:8000/api/pdfs/', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    console.log("Request completed")
+    console.log(data)
+    alert("File sent successfully");
+  };
+
+  const fetchFiles = async () => {
+    axios.get(`${API_URL}/api/pdfs`)
+    .then((response) => setFiles(response.data))
+    .catch((error) => {
+      console.log("Error getting files from DB");
+    })
+  }
+
   const showContent = (section) => {
     setActiveSection(section);
+    if (section === 'filesreceived') {
+      fetchFiles(); // Fetch files when "Files" section is active
+    }
   };
+
+  //const showContent = (section) => {
+    //setActiveSection(section);
+  //};
 
   const handleInputChange = (index, field, value) => {
     const newRows = [...rows];
@@ -170,6 +228,11 @@ function Dashboard() {
               <i className="fa fa-RecordCoordinates"></i> Record Co-ordinates
             </a>
           </li>
+          <li className={activeSection === 'sendfiles' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('sendfiles')}>
+              <i className="fa fa-home"></i> Send Files
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -232,6 +295,32 @@ function Dashboard() {
             <div className="surface-area">
               <h3>Calculated Surface Area: {surfaceArea.toFixed(2)} square meters</h3>
             </div>
+          </div>
+        </div>
+
+
+        <div className={`content ${activeSection === 'sendfiles' ? 'active' : ''}`} id="sendfiles">
+        <div className="content active" id="sendfiles">
+            <input type="file" onChange={handleFileChange} />
+            <input
+              type="text"
+              placeholder="Destination Dashboard"
+              value={destinationDashboard}
+              onChange={(e) => setDestinationDashboard(e.target.value)}
+            />
+
+            <div>
+                  <label htmlFor="">User</label>
+                  <select value={user} onChange={(e) => setUser(e.target.value)}>
+                      <option value={null}>---</option>
+                      {users && users.length > 0 ? (
+                      users.map((u, index) => <option value={u.id} key={index}>{u.username}</option>)
+                  ) : (
+                      <option value={null}>No users available</option>
+                  )}
+                  </select>
+              </div>
+            <button onClick={handleUpload}>Upload PDF</button>
           </div>
         </div>
       </div>

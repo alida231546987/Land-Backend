@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react';
-import { Document, Page, Text, View, Image, PDFDownloadLink } from '@react-pdf/renderer';
+import React, { useEffect } from 'react';
+import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
 import { StyleSheet } from '@react-pdf/renderer';
 import landImage from "../../../assets/Land registrer.png";
+import logo from "../../../assets/logo.jpeg";
 
 // Define styles for the PDF document
 const styles = StyleSheet.create({
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 100,
-    //marginTop: 20,
   },
   title: {
     fontSize: 16,
@@ -47,27 +47,32 @@ const styles = StyleSheet.create({
     bottom: 30, // Adjust as needed
     left: 0,
     right: 0,
-    textAlign: 'center'
+    textAlign: 'center',
+    width: 200,
+    height: 100,
   },
   signature: {
-    borderTop: '1px solid black',
-    width: '50%',
-    alignSelf: 'center',
-    margin: 'auto',
+    width: '100%', // Adjust width to fill the wrapper
+    height: '100%', // Adjust height to fill the wrapper
+    objectFit: 'contain', // Maintain aspect ratio
   },
 });
 
 // PDF Document Component
-export const CertificateOfOwnership = ({ data, signature }) => {
+export const CertificateOfOwnership = ({ data, signature, item }) => {
   useEffect(() => {
-    if (signature)
-      console.log("Rendering CertifOfOwnership with signature: ");
-
-    if (data){
-      console.log("Rendering COO with data")
-      console.log(data)
+    if (signature) {
+      console.log("Rendering CertifOfOwnership with signature: ", signature);
+    } else {
+      console.log("No signature provided.");
     }
-  }, []);
+    if (data) {
+      console.log("Rendering COO with data:", data);
+    }
+  }, [signature, data]);
+
+  const currentDate = new Date().toLocaleString(); // Get the current time
+
   return (
     <Document>
       <Page style={styles.container}>
@@ -86,7 +91,7 @@ export const CertificateOfOwnership = ({ data, signature }) => {
             <Text>CONSERVATION FONCIERES DE LA MEFOU ET AFAMBA</Text>
           </View>
           <View style={styles.col}>
-            <Image style={styles.image} src="../appimages/images/Mindcaflogo.jpg" />
+            <Image style={styles.image} src={logo || "../../../assets/logo.jpeg"} />
           </View>
           <View style={styles.col}>
             <Text>REPUBLIC OF CAMEROON</Text>
@@ -107,49 +112,48 @@ export const CertificateOfOwnership = ({ data, signature }) => {
 
         {/* Body */}
         <Text>
-          The Land Register office of state property and land tenure rights of the division of MEFOU and AFAMBA undersigned certifies that the empty land which does not contain any building located here at <Text style={styles.bold}>SOA</Text> precisely at <Text style={styles.bold}>NKOLFOULOU II</Text> of a surface area of 14 hectares immatriculated in the Land title register of the division of the MEFOU and AFAMBA.
+          The Land Register office of state property and land tenure rights of the division of MEFOU and AFAMBA undersigned certifies that the land located here at <Text style={styles.bold}>Yaounde</Text> precisely at <Text style={styles.bold}>{item?.Location || "N/A"}</Text> of a surface area of {item?.Size || "N/A"} immatriculated in the Land title register of the division of the MEFOU and AFAMBA.
         </Text>
 
         <Text style={styles.centerText}>The owner(s) of this land are:</Text>
 
         {/* Dynamic Data Section */}
         {data.map((item, index) => (
-          <View style={styles.label}>
+          <View key={index} style={styles.label}>
             <Text>Owner Name: {item.Owner_name}</Text>
             <Text>Location: {item.Location}</Text>
             <Text>Land Size: {item.Size}</Text>
-        </View>
+          </View>
         ))}
 
         {/* Footer */}
         <Text>
-          The owner(s) of this land above acquired this property through
+          The owner(s) of this land above acquired this property through the Framentation Procedure
           <br />
-          This so-called Land title on which a duplicatum <Text style={styles.bold}>No1</Text> has been created and delivered on this has been withdrawn based on the rigde that stipulates that <Text style={styles.bold}>No 001599/Y.7/MINDCAF/SG/D6 of the 17/9/2023</Text> of MINDCAF concerning the withdrawal of land titles then the establishment of a new land title on the profit of [Name of the new land owner] is a judiciary prenotation following the order <Text style={styles.bold}>No256/2015</Text> of the TPI of the Division of MFOU following the request of [New Land owner name] in accordance with the inscriptions of the Land Book of the Land registrars office establish due to the demand of [New land owner] for information.
+          This so-called Land title on which a duplicatum <Text style={styles.bold}>No1</Text> has been created  <Text>  {currentDate}</Text> and delivered on this has been withdrawn based on the rigde that stipulates that <Text style={styles.bold}>No 001599/Y.7/MINDCAF/SG/D6 of the 17/9/2023</Text> of MINDCAF concerning the withdrawal of land titles then the establishment of a new land title on the profit of {item?.Owner_name || "N/A"} is a judiciary prenotation following the order <Text style={styles.bold}>No256/2015</Text> of the TPI of the Division of MFOU following the request of {item?.Owner_name || "N/A"} in accordance with the inscriptions of the Land Book of the Land registrars office establish due to the demand of {item?.Owner_name || "N/A"} for information.
         </Text>
         <Text>En foi de quoi the present certificate is been established to serve and valorize its right.</Text>
         <Image style={styles.image} src={landImage || "../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png"} />
 
         {/* Date and other details */}
-        <View style={styles.row}>
-          <Text>MFOU le: [Date]</Text>
-          <Text>ID Num: [Land ID]</Text>
-          <Text>Validity: [Validity Period]</Text>
-        </View>
-        {/* Signature */}
-        {signature && (
-          <View style={styles.signatureWrapper}>
-            <Image style={styles.signature} src={signature} />
+        {data.map((item, index) => (
+          <View key={index} style={styles.row}>
+            <Text>Signature:</Text>
+            <Text>Validity: 30 Days</Text>
           </View>
-        )}
+        ))}
 
-        {
-          !signature && (
-            <View style={styles.signatureWrapper}>
-              <Text>No signature</Text>
-            </View>
-          )
-        }
+        {/* Signature */}
+        <View style={styles.signatureWrapper}>
+          {signature ? (
+            <Image style={styles.signature} src={signature} />
+          ) : (
+            <>
+              <Text>No signature available</Text>
+              <View style={{width: '100%', height: '100%' }} />
+            </>
+          )}
+        </View>
       </Page>
     </Document>
   );

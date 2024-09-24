@@ -12,6 +12,22 @@ function Dashboard() {
   // State to manage the sidebar collapsed state
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  //To fetch file sent by another user form another dashboard
+  const [pdfFiles, setPdfFiles] = useState([]); // Define pdfFiles state
+
+  useEffect(() => {
+    const fetchPdfFiles = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/pdfs/'); // Adjust your API endpoint as necessary
+        setPdfFiles(response.data);
+      } catch (error) {
+        console.error("Error fetching PDF files:", error);
+      }
+    };
+
+    fetchPdfFiles();
+  }, []);
+
   // State to manage which content section is active
   const [activeSection, setActiveSection] = useState('home');
 
@@ -22,7 +38,7 @@ function Dashboard() {
     signatureRef.current.clear();
     setSignature('');
   };
-
+  
   const saveSignature = () => {
     setSignature(signatureRef.current.toDataURL());
 
@@ -233,8 +249,28 @@ function Dashboard() {
         </div>
 
         <div className={`content ${activeSection === 'messages' ? 'active' : ''}`} id="messages">
-          <h2>Messages</h2>
-          <p>This is the messages section content.</p>
+        <h2>Messages</h2>
+        <ul>
+            {pdfFiles.length > 0 ? (
+                pdfFiles.map((pdf) => (
+                    <li key={pdf.id}>
+                        <a 
+                            href={`http://localhost:8000${pdf.file}/`} // Adjusted to the correct URL for the PDF
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            download // This attribute enables downloading
+                        >
+                            {pdf.file.split('/').pop()}  {/* Displaying the file name */}
+                        </a>
+                        <p>Uploaded At: {new Date(pdf.uploaded_at).toLocaleString()}</p>
+                        <p>Destination Dashboard: {pdf.destination_dashboard}</p>
+                    </li>
+                ))
+            ) : (
+                <li>No PDF files found.</li>
+            )}
+        </ul>
+
         </div>
 
         <div className={`content ${activeSection === 'notifications' ? 'active' : ''}`} id="notifications">

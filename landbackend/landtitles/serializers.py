@@ -13,10 +13,8 @@ from rest_framework.authtoken.models import Token
 from .models import Profile, TransferOwnership
 
 from rest_framework import serializers
-from .models import LandTitle
+from .models import LandTitle, PDFFile
 
-# serializers.py for file iplaods and share
-from .models import FileUpload
 
 
 User = get_user_model()
@@ -136,13 +134,11 @@ class OwnershipTransferSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"No land title with id {value}")
         
         return value
-
-
-# serializers.py for file uploads and share
-class FileUploadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FileUpload
-        fields = ['file']
+    
+class PDFFileSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = PDFFile
+        fields = "__all__"
 
 
 

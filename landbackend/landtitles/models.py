@@ -95,6 +95,12 @@ class TransferOwnership(models.Model):
         return f"Transfer of Land ID: {self.land_id} from {self.owner_name} to {self.buyer_name}"
 
 
-#Messaging model
-class FileUpload(models.Model):
-    file = models.FileField(upload_to='uploads/')
+class PDFFile(models.Model):
+    file = models.FileField(upload_to='pdfs/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    destination_dashboard = models.CharField(max_length=100)  # To identify dashboard destination
+    recipient = models.ForeignKey(User,on_delete=models.SET_NULL,null=True) # Referencing the users table 
+
+    def __str__(self):
+        return self.file.name
+
