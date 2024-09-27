@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 5,
     textAlign: 'center',
     marginBottom: 10,
     marginTop: 20,
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
   },
   title: {
-    fontSize: 30,
+    fontSize: 5,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
   },
   header: {
-    fontSize: 30,
+    fontSize: 5,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     maxWidth: 1200,
   },
   number: {
-    fontSize: 20,
+    fontSize: 5,
     marginTop: 20,
   },
   innerFrame: {
@@ -92,21 +92,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    fontSize: 50,
+    fontSize: 5,
     marginBottom: 20,
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 50,
+    fontSize: 5,
     textAlign: 'center',
     marginBottom: 20,
   },
   propertyInfo: {
-    fontSize: 20,
+    fontSize: 5,
     marginBottom: 10,
   },
   ownerInfoHeader: {
-    fontSize: 30,
+    fontSize: 5,
     marginTop: 20,
     fontWeight: 'bold',
   },
@@ -119,6 +119,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  signatureWrapper: {
+    position: 'absolute',
+    bottom: 30, // Adjust as needed
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    width: 200,
+    height: 100,
+  },
+  signature: {
+    width: '100%', // Adjust width to fill the wrapper
+    height: '100%', // Adjust height to fill the wrapper
+    objectFit: 'contain', // Maintain aspect ratio
   },
 });
 

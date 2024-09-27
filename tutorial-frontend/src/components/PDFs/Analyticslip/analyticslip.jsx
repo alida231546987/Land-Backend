@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import styles from './analyticslip.js'; // Import your styles
 //import landImage from "../../../assets/Land registrer.png";
+import { SignatureCanvas } from 'react-signature-canvas';
 
 
 
 
-export const AnalyticalSlip = () => {
+export const AnalyticalSlip = ({data , signature, item}) => {
+  useEffect(() => {
+    if (signature) {
+      console.log("Rendering Land title with signature: ", signature);
+    }else{
+      console.log("No signature provided.");
+    }
+    if (data) {
+      console.log("Rendering Land title with data:", data);
+    }
+  }, [signature, data]);
   // State for dynamic data
-  const [data, setData] = useState({
+  const [slip, setSlip] = useState({
     notaryName: '',
     date: '',
     buyersName: '',
@@ -66,13 +77,13 @@ export const AnalyticalSlip = () => {
           style={styles.image}
           src="../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png"
         /> */}
-            <Text style={styles.number}>Land Title Number {data.landId}</Text>
+            <Text style={styles.number}>Land Title Number {slip.landId}</Text>
           </View>
         </View>
       </Page>
       <Page style={styles.page2}>
         <View style={styles.borderFrame}>
-          <Text style={styles.header}>Land Id: {data.landId || '___________'}</Text>
+          <Text style={styles.header}>Land Id: {slip.landId || '___________'}</Text>
           <Text style={styles.title}>LAND DESCRIPTION</Text>
           <Text style={styles.propertyInfo}>Nature of the Property: {propertyDetails.nature || '___________'}</Text>
           <Text style={styles.propertyInfo}>Land Size: {propertyDetails.size || '__________'}</Text>
@@ -119,7 +130,7 @@ export const AnalyticalSlip = () => {
               <Text>REGISTER OF PROPERTY of MFOUNDI</Text>
               <Text>______________</Text>
               <Text>Titre Foncier No</Text>
-              <Text>Land Certificate No {data.landId}</Text>
+              <Text>Land Certificate No {slip.landId}</Text>
             </Text>
           </View>
           <View style={styles.col}>
@@ -141,29 +152,29 @@ export const AnalyticalSlip = () => {
         </View>
 
         <Text>
-          Following the acte No 6175 of the 31/01/2007 received by <Text>{data.notaryName}</Text>, registered at Yaounde CPIC 1(Civil acte) on the <Text>{data.date}</Text>, Volume 10 Folio 81 Case and Bd 226/4.
+          Following the acte No 6175 of the 31/01/2007 received by <Text>{slip.notaryName}</Text>, registered at Yaounde CPIC 1(Civil acte) on the <Text>{slip.date}</Text>, Volume 10 Folio 81 Case and Bd 226/4.
           <br />
           <br />
-          1) <Text>{data.buyersName}</Text> residing at <Text>{data.buyersAddress}</Text>, born on <Text>{data.dob}</Text> at the <Text>{data.placeOfBirth}</Text>
-          Acting mostly for their personal names than for the name itself and for the account of the others co-dividers of land certificates <Text>{data.landId}</Text>, in virtue of a procuration which was given to them by <Text>{data.sellersName}</Text>
-          All collective owners of the land certificates No <Text>{data.landId}</Text> below.
-          On a term of a procuration which was given by them following the acte received by <Text>{data.notaryName}</Text> a Notary in Yaounde <Text>{data.date}</Text> registered in Yaounde IV (civil act)
+          1) <Text>{slip.buyersName}</Text> residing at <Text>{slip.buyersAddress}</Text>, born on <Text>{slip.dob}</Text> at the <Text>{slip.placeOfBirth}</Text>
+          Acting mostly for their personal names than for the name itself and for the account of the others co-dividers of land certificates <Text>{slip.landId}</Text>, in virtue of a procuration which was given to them by <Text>{slip.sellersName}</Text>
+          All collective owners of the land certificates No <Text>{slip.landId}</Text> below.
+          On a term of a procuration which was given by them following the acte received by <Text>{slip.notaryName}</Text> a Notary in Yaounde <Text>{slip.date}</Text> registered in Yaounde IV (civil act)
           volume "", Foliio "", Case and Bd 1254/1
-          All these people stated above sold this piece of Land for the amount of {data.price}
+          All these people stated above sold this piece of Land for the amount of {slip.price}
           <br />
           <br />
-          To <Text>{data.newOwner}</Text>, <Text>{data.newOwnerProfession}</Text>, <Text>{data.newOwnerLocation}</Text>, born on <Text>{data.newOwnerDob}</Text> at <Text>{data.newOwnerBirthPlace}</Text>, son/daughter of <Text>{data.motherName}</Text> and <Text>{data.fatherName}</Text>, their nationality <Text>{data.nationality}</Text>.
+          To <Text>{slip.newOwner}</Text>, <Text>{slip.newOwnerProfession}</Text>, <Text>{slip.newOwnerLocation}</Text>, born on <Text>{slip.newOwnerDob}</Text> at <Text>{slip.newOwnerBirthPlace}</Text>, son/daughter of <Text>{slip.motherName}</Text> and <Text>{slip.fatherName}</Text>, their nationality <Text>{slip.nationality}</Text>.
         </Text>
 
         <View style={styles.row}>
           <Text>
-            Price: {data.price}
+            Price: {slip.price}
           </Text>
           <Text>
-            Quittance: <Text>{data.quittanceNo}</Text>
+            Quittance: <Text>{slip.quittanceNo}</Text>
           </Text>
           <Text>
-            Date: {data.date}
+            Date: {slip.date}
           </Text>
           {/* <Image style={styles.image} src={landImage || "../tutorial-frontend/src/assets/Land_registrer-removebg-preview.png"} /> */}
         </View>

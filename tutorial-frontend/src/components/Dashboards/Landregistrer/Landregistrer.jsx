@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './landregistrer.css'; // Import the CSS file for styling
+import SignaturePad from 'react-signature-canvas';
 import SignatureCanvas from 'react-signature-canvas';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { CertificateOfOwnership } from '../../PDFs/Certificate of ownership/Certificate';
@@ -7,6 +8,7 @@ import { AnalyticalSlip } from '../../PDFs/Analyticslip/analyticslip.jsx';
 import { API_URL } from '../../../utils/constants.js';
 import axios from 'axios';
 // import { notarialdeed } from '../../PDFs/NotarialDeed/notarialdeed';
+import { MdEmail } from 'react-icons/md';
 
 function Dashboard() {
   // State to manage the sidebar collapsed state
@@ -14,6 +16,103 @@ function Dashboard() {
 
   //To fetch file sent by another user form another dashboard
   const [pdfFiles, setPdfFiles] = useState([]); // Define pdfFiles state
+
+  //Form to establish land title
+  //Form to establish new land title
+  const [formData, setFormData] = useState({
+    landId: '',
+    nature: '',
+    size: '',
+    location: '',
+    area: '', // Added
+    coordinates: { latitude: '', longitude: '' },
+    fullName: '',
+    email: '', // Added
+    cniid: '', // Added
+    profession: '',
+    address: '',
+    dob: '',
+    pob: '',
+    fatherName: '',
+    motherName: '',
+    deliveryDate: ''
+  });
+
+  const updateField = (e) => {
+    const { name, value } = e.target;
+    
+    if (name === 'latitude' || name === 'longitude') {
+      setFormData({
+        ...formData,
+        coordinates: {
+          ...formData.coordinates,
+          [name]: value,
+        },
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  const submitTransfer = async (e) => {
+    e.preventDefault();
+    try{
+      const data = {
+        land_id : formData.landId,
+        owner_name : formData.fullName,
+        owner_email : formData.email,
+        land_location : formData.location,
+        national_id : formData.cniid,
+        land_size : formData.size,
+        surface_area : formData.area,
+        coordinates : formData.coordinates,
+        nature : formData.nature,
+        profession : formData.profession,
+        address : formData.address,
+        dob : formData.dob,
+        pob : formData.pob,
+        father_name : formData.fatherName,
+        mother_name : formData.motherName,
+        delivery_date : formData.deliveryDate,
+      };
+      const response = await axios.post(
+        'http://localhost:8000/api/landtitles',
+        data
+      );
+      if (response.status === 201){
+        alert('New land title information recorded');
+        setFormData({
+          landId: '',
+          nature: '',
+          size: '',
+          location: '',
+          area: '', // Reset added field
+          coordinates: { latitude: '', longitude: '' },
+          fullName: '',
+          email: '', // Reset added field
+          cniid: '', // Reset added field
+          profession: '',
+          address: '',
+          dob: '',
+          pob: '',
+          fatherName: '',
+          motherName: '',
+          deliveryDate: '',
+        });
+      } else{
+        // Use optional chaining and fallback
+        alert('Error: ' + (response.data?.message || 'Unknown error'));
+      }
+    } catch (error) {
+      // Use optional chaining to prevent TypeError
+      console.log(error.response?.data || error);
+      alert('There was an error processing your request');
+    }
+  };
+
 
   useEffect(() => {
     const fetchPdfFiles = async () => {
@@ -34,16 +133,21 @@ function Dashboard() {
   const [signature, setSignature] = useState('');
   const signatureRef = useRef(null);
 
+  const saveSignature = () => {
+    if (signatureRef.current) {
+      const signatureData = signatureRef.current.toDataURL(); // Save as image data
+      console.log('Signature saved:', signatureData);
+      setSignature(signatureData); // Update the signature state
+    }
+  };
+
   const clearSignature = () => {
-    signatureRef.current.clear();
-    setSignature('');
+    if (signatureRef.current) {
+      signatureRef.current.clear(); // Clear the canvas
+      setSignature(''); // Reset the signature state
+    }
   };
   
-  const saveSignature = () => {
-    setSignature(signatureRef.current.toDataURL());
-
-    console.log(`The signature URL ${signatureRef.current.toDataURL()}`);
-  };
 
   const [landData, setLandData] = useState({
     owner_name: "",
@@ -171,9 +275,9 @@ function Dashboard() {
               <i className="fa fa-user-circle"></i> Profile
             </a>
           </li>
-          <li className={activeSection === 'settings' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('settings')}>
-              <i className="fa fa-cog"></i> Settings
+          <li className={activeSection === 'land-title' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('land-title')}>
+              <i className="fa fa-cog"></i> Establish Land Title
             </a>
           </li>
           <li className={activeSection === 'generate-pdfs' ? 'active' : ''}>
@@ -290,10 +394,61 @@ function Dashboard() {
           </form>
         </div>
 
-        <div className={`content ${activeSection === 'settings' ? 'active' : ''}`} id="settings">
-          <h2>Settings</h2>
-          <p>This is the settings section content.</p>
-        </div>
+        <div className={`content ${activeSection === 'land-title' ? 'active' : ''}`} id="land-title">
+          <h2>Establish new Land title</h2>
+          <form onSubmit={submitTransfer}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                  <label htmlFor="landId">Land Id:</label>
+                  <input type="text" name="landId" id="landId" value={formData.landId} onChange={updateField} required /><br />
+
+                  <label htmlFor="nature">Nature of the Property:</label>
+                  <input type="text" name="nature" id="nature" value={formData.nature} onChange={updateField} required /><br />
+
+                  <label htmlFor="size">Land Size:</label>
+                  <input type="text" name="size" id="size" value={formData.size} onChange={updateField} required /><br />
+
+                  <label htmlFor="location">Land Location:</label>
+                  <input type="text" name="location" id="location" value={formData.location} onChange={updateField} required /><br />
+
+                  <label htmlFor="area">Surface Area:</label>
+                  <input type="text" name="area" id="area" value={formData.area} onChange={updateField} required /><br />
+
+                  <label htmlFor="coordinates">Coordinates:</label>
+                  <input type="text" name="coordinates" id="coordinates" value={formData.coordinates} onChange={updateField} /><br />
+
+                  <label htmlFor="fullName">New Owner's Full Name:</label>
+                  <input type="text" name="fullName" id="fullName" value={formData.fullName} onChange={updateField} required/><br />
+
+                  <label htmlFor="email">New Owner's Email:</label>
+                  <input type="email" name="email" id="email" value={formData.email} onChange={updateField} required /><br />
+
+                  <label htmlFor="cniid">National Id Number:</label>
+                  <input type="text" name="cniid" id="cniid" value={formData.cniid} onChange={updateField} required/><br />
+
+                  <label htmlFor="profession">Profession:</label>
+                  <input type="text" name="profession" id="profession" value={formData.profession} onChange={updateField} required/><br />
+
+                  <label htmlFor="address">Address:</label>
+                  <input type="text" name="address" id="address" value={formData.address} onChange={updateField} required /><br />
+
+                  <label htmlFor="dob">Date Of Birth:</label>
+                  <input type="date" name="dob" id="dob" value={formData.dob} onChange={updateField} required /><br />
+
+                  <label htmlFor="pob">Place Of Birth:</label>
+                  <input type="text" name="pob" id="pob" value={formData.pob} onChange={updateField} required /><br />
+
+                  <label htmlFor="fatherName">Father's Name:</label>
+                  <input type="text" name="fatherName" id="fatherName" value={formData.fatherName} onChange={updateField} required/><br />
+
+                  <label htmlFor="motherName">Mother's Name:</label>
+                  <input type="text" name="motherName" id="motherName" value={formData.motherName} onChange={updateField} required /><br />
+
+                  <label htmlFor="deliveryDate">Delivery Date:</label>
+                  <input type="date" name="deliveryDate" id="deliveryDate" value={formData.deliveryDate} onChange={updateField} required /><br />
+                  <button type="submit">Create new land title</button>
+                </div>
+              </form>
+          </div>
 
         <div className={`content ${activeSection === 'generate-pdfs' ? 'active' : ''}`} id="generate-pdfs">
           <h2>Generate PDFs</h2>

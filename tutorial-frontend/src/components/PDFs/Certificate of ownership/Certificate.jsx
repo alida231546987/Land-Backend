@@ -108,11 +108,11 @@ export const CertificateOfOwnership = ({ data, signature, item }) => {
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>CERTIFICATE OF OWNERSHIP No_______/CP/MINDCAF/2/35/T600</Text>
+        <Text style={styles.title}>CERTIFICATE OF OWNERSHIP /CP/MINDCAF/2/35/T600</Text>
 
         {/* Body */}
         <Text>
-          The Land Register office of state property and land tenure rights of the division of MEFOU and AFAMBA undersigned certifies that the land located here at <Text style={styles.bold}>Yaounde</Text> precisely at <Text style={styles.bold}>{item?.Location || "N/A"}</Text> of a surface area of {item?.Size || "N/A"} immatriculated in the Land title register of the division of the MEFOU and AFAMBA.
+          The Land Register office of state property and land tenure rights of the Ministry of State Property Survey and Land Tenure undersigned certifies that the land located here at <Text style={styles.bold}>Yaounde</Text> precisely at <Text style={styles.bold}>{item?.Location || "N/A"}</Text> of a surface area of {item?.Size || "N/A"} immatriculated in the Land title register of Cameroon.
         </Text>
 
         <Text style={styles.centerText}>The owner(s) of this land are:</Text>
@@ -128,7 +128,7 @@ export const CertificateOfOwnership = ({ data, signature, item }) => {
 
         {/* Footer */}
         <Text>
-          The owner(s) of this land above acquired this property through the Framentation Procedure
+          The owner(s) of this land above acquired this property through the Fragmentation Procedure
           <br />
           This so-called Land title on which a duplicatum <Text style={styles.bold}>No1</Text> has been created  <Text>  {currentDate}</Text> and delivered on this has been withdrawn based on the rigde that stipulates that <Text style={styles.bold}>No 001599/Y.7/MINDCAF/SG/D6 of the 17/9/2023</Text> of MINDCAF concerning the withdrawal of land titles then the establishment of a new land title on the profit of {item?.Owner_name || "N/A"} is a judiciary prenotation following the order <Text style={styles.bold}>No256/2015</Text> of the TPI of the Division of MFOU following the request of {item?.Owner_name || "N/A"} in accordance with the inscriptions of the Land Book of the Land registrars office establish due to the demand of {item?.Owner_name || "N/A"} for information.
         </Text>

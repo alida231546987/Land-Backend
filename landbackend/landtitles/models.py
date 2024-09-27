@@ -61,7 +61,18 @@ class LandTitle(models.Model):
     land_size = models.FloatField()
     surface_area = models.FloatField(null=True, blank=True)
     coordinates = models.JSONField(null=True, blank=True)  # To store coordinates
-
+    nature = models.CharField(max_length=500, null=True)
+    profession = models.CharField(max_length=500, null=True)
+    address = models.CharField(null=True, max_length=500)
+    dob = models.DateTimeField(null=True)
+    pob = models.CharField(max_length=500, null=True)
+    father_name = models.CharField(max_length=500, null=True)
+    mother_name = models.CharField(max_length=500, null=True)
+    delivery_date = models.DateTimeField(null=True ,auto_now_add=True)
+    
+    
+    
+    
     def __str__(self):
         return f"{self.owner_name} - {self.land_id}"
 
