@@ -3,21 +3,175 @@ import './landregistrer.css'; // Import the CSS file for styling
 import SignaturePad from 'react-signature-canvas';
 import SignatureCanvas from 'react-signature-canvas';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { CertificateOfOwnership } from '../../PDFs/Certificate of ownership/Certificate';
+import { CertificateOfOwnership } from '../../PDFs/Certificate of ownership/Certificate.jsx';
 import { AnalyticalSlip } from '../../PDFs/Analyticslip/analyticslip.jsx';
 import { API_URL } from '../../../utils/constants.js';
 import axios from 'axios';
 // import { notarialdeed } from '../../PDFs/NotarialDeed/notarialdeed';
-import { MdEmail } from 'react-icons/md';
+
 
 function Dashboard() {
   // State to manage the sidebar collapsed state
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  //To fetch file sent by another user form another dashboard
+  //Send files 
+  const [files, setFiles] = useState([]); // Files state
+  const [destinationDashboard, setDestinationDashboard] = useState(''); // Define state for destinationDashboard
+  const [handleUplaod, setHandleUpload] = useState(''); // Define state for destinationDashboard
+  const [users, setUsers] = useState(null);
+  const [user, setUser] = useState(null);
+  const [handleSubmit, setHandleSubmit] = useState(null);
+  const [handleChange, setHandleChange] = useState(null);
+  const [file, setFile] = useState(null);
+
+  // For Email Messages 
+  const [recipient, setRecipient] = useState('');
+  const [message, setMessage] = useState('');
+  const [filee, setFilee] = useState(null);
+  const [statusMsg, setStatusMsg] = useState('');
+
+  const handleSubmite = async (e) => {
+    e.preventDefault();
+
+      // Debugging: Log the current state
+    console.log('Recipient:', recipient);
+    console.log('Message:', message);
+    console.log('File:', filee);
+
+    if (!recipient || !message || !filee) {
+      setStatusMsg('Please fill in all fields and select a file.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('recipient', recipient);
+    formData.append('message', message);
+    formData.append('file', filee);
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/send-email/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setStatusMsg(response.data.success);
+      setRecipient('');
+      setMessage('');
+      setFile(null);
+      // Reset the file input
+      document.getElementById('fileInput').value = '';
+    } catch (error) {
+      if (error.response && error.response.data) {
+        setStatusMsg(`Error: ${JSON.stringify(error.response.data)}`);
+      } else {
+        setStatusMsg('An error occurred while sending the email.');
+      }
+    };
+  };
+
+  //Getting list of users form the backend
+  useEffect(() => {
+    axios.get(`${API_URL}/api/users`)
+    .then((response) => setUsers(response.data))
+    .catch((error) => {
+      console.log("Error getting users from DB");
+    })
+  }, []);
+
+    //Send files to another user 
+    function FileUpload() {
+      const [destinationDashboard, setDestinationDashboard] = useState('');
+    };
+  
+    const handleFileChange = (e) => {
+      setFile(e.target.files[0]);
+    };
+    
+    const handleUpload = async () => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('destination_dashboard', destinationDashboard);
+  
+      const response = await fetch('http://localhost:8000/api/pdfs/', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const data = await response.json();
+  
+      console.log("Request completed")
+      console.log(data)
+      alert("File sent successfully");
+    };
+  
+    const fetchFiles = async () => {
+      axios.get(`${API_URL}/api/pdfs`)
+      .then((response) => setFiles(response.data))
+      .catch((error) => {
+        console.log("Error getting files from DB");
+      })
+    }
+  
+    const showConten = (section) => {
+      setActiveSection(section);
+      if (section === 'files') {
+        fetchFiles(); // Fetch files when "Files" section is active
+      }
+    };
+
+
   const [pdfFiles, setPdfFiles] = useState([]); // Define pdfFiles state
 
-  //Form to establish land title
+  //Generate pdf for land title
+  const [landId, setLandId] = useState('');
+  const [slip, setSlip] = useState({});
+  const [propertyDetails, setPropertyDetails] = useState({
+    nature: "",
+    land_size: 0,
+    land_location: "",
+    coordinates: {}
+  });
+  const [ownerDetails, setOwnerDetails] = useState({
+    owner_name: "",
+    profession: "",
+    address: "",
+    dob: "",
+    pob: "",
+    father_name: "",
+    mother_name: "",
+    delivery_date: ""
+  });
+  const [error, setError] = useState('');
+
+  const handleFetchDetails = async () => {
+    try {
+      setError('');
+      const response = await axios.get(`http://localhost:8000/api/landtitles`);
+      const data = response.data;
+
+      setSlip({ land_id: data.land_id });
+      setPropertyDetails({
+        nature: data.nature,
+        land_size: data.land_size,
+        land_location: data.land_location,
+        coordinates: data.coordinates
+      });
+      setOwnerDetails({
+        owner_name: data.owner_name,
+        profession: data.profession,
+        address: data.address,
+        dob: data.dob,
+        pob: data.pob,
+        father_name: data.father_name,
+        mother_name: data.mother_name,
+        delivery_date: data.delivery_date
+      });
+    } catch (err) {
+      console.error(err);
+      setError('Failed to fetch land details. Please check the Land ID.');
+    }
+  };
+
   //Form to establish new land title
   const [formData, setFormData] = useState({
     landId: '',
@@ -113,7 +267,7 @@ function Dashboard() {
     }
   };
 
-
+  //Fetch files sent form the db
   useEffect(() => {
     const fetchPdfFiles = async () => {
       try {
@@ -136,7 +290,7 @@ function Dashboard() {
   const saveSignature = () => {
     if (signatureRef.current) {
       const signatureData = signatureRef.current.toDataURL(); // Save as image data
-      console.log('Signature saved:', signatureData);
+      // console.log('Signature saved:', signatureData);
       setSignature(signatureData); // Update the signature state
     }
   };
@@ -152,11 +306,19 @@ function Dashboard() {
   const [landData, setLandData] = useState({
     owner_name: "",
     land_location: "",
-    land_size: ""
+    land_size: "",
+    nature:"",
+    coordinates: "",
+    profession: "",
+    address: "",
+    dob: "",
+    father_name: "",
+    pob: "",
+    mother_name:"",
+    delivery_date: ""
   });
   // State to manage transfer requests
   const [requests, setRequests] = useState([]);
-  const [landId, setLandId] = useState("2222");
 
   // State to manage selected document for PDF generation
   const [selectedDocument, setSelectedDocument] = useState(<CertificateOfOwnership data={[{
@@ -234,6 +396,12 @@ function Dashboard() {
   }, []);  // Runs only once when the component mounts
   // Empty dependency array ensures it only runs once on component mount
 
+  useEffect(() => {
+    if (selectedDocument) {
+      console.log('selected document changed to', selectedDocument);
+    }
+  }, [selectedDocument]);
+
   // Function to toggle sidebar collapse
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -252,7 +420,7 @@ function Dashboard() {
         <ul>
           <li className={activeSection === 'home' ? 'active' : ''}>
             <a href="#" onClick={() => showContent('home')}>
-              <i className="fa fa-home"></i> Home
+              <i className="fa fa-home"></i> Send Email
             </a>
           </li>
           <li className={activeSection === 'transferofownershiprequest' ? 'active' : ''}>
@@ -265,9 +433,9 @@ function Dashboard() {
               <i className="fa fa-envelope"></i> Messages
             </a>
           </li>
-          <li className={activeSection === 'notifications' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('notifications')}>
-              <i className="fa fa-bell"></i> Notifications
+          <li className={activeSection === 'Send-a-file' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('Send-a-file')}>
+              <i className="fa fa-bell"></i> Send a file 
             </a>
           </li>
           <li className={activeSection === 'profile' ? 'active' : ''}>
@@ -300,8 +468,37 @@ function Dashboard() {
 
         {/* Content Sections */}
         <div className={`content ${activeSection === 'home' ? 'active' : ''}`} id="home">
-          <h2>Home</h2>
-          <p>This is the home section content.</p>
+        <h2>Send an Email</h2>
+            <form onSubmit={handleSubmite}>
+            <div>
+              <label>Recipient Email:</label>
+              <input
+                type="email"
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label>Message:</label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label>Attach File:</label>
+              <input
+                type="file"
+                id="fileInput"
+                onChange={(e) => setFilee(e.target.files[0])}
+                required
+              />
+            </div>
+            <button type="submit">Send Email</button>
+          </form>
+          {statusMsg && <p>{statusMsg}</p>}
         </div>
 
         <div className={`content ${activeSection === 'transferofownershiprequest' ? 'active' : ''}`} id="transferofownershiprequest">
@@ -377,21 +574,34 @@ function Dashboard() {
 
         </div>
 
-        <div className={`content ${activeSection === 'notifications' ? 'active' : ''}`} id="notifications">
-          <h2>Notifications</h2>
-          <div className="notification-item">New message received.</div>
-          <div className="notification-item">User registered successfully.</div>
-        </div>
+        {/* Messages Section */}
+        {activeSection === 'Send-a-file' && (
+          <div className="content active" id="Send-a-file">
+            <input type="file" onChange={handleFileChange} />
+            <input
+              type="text"
+              placeholder="Destination Dashboard"
+              value={destinationDashboard}
+              onChange={(e) => setDestinationDashboard(e.target.value)}
+            />
+
+            <div>
+              <label htmlFor="">User</label>
+              <select value={users} onChange={(e) => setUsers(e.target.value)}>
+                <option value={null}>---</option>
+                {
+                  users && Array.isArray(users) && users.map((u, index) => (
+                    <option value={u.id} key={index}>{u.username}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <button onClick={handleUpload}>Upload PDF</button>
+          </div>
+        )};
 
         <div className={`content ${activeSection === 'profile' ? 'active' : ''}`} id="profile">
           <h2>Profile</h2>
-          <form>
-            <label htmlFor="username">Username:</label>
-            <input type="text" id="username" defaultValue="JohnDoe" /><br /><br />
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" defaultValue="john@example.com" /><br /><br />
-            <button className="btn btn-edit">Save Changes</button>
-          </form>
         </div>
 
         <div className={`content ${activeSection === 'land-title' ? 'active' : ''}`} id="land-title">
@@ -456,6 +666,7 @@ function Dashboard() {
             <label htmlFor="pdf-type">Select PDF Type:</label>
             <select id="pdf-type" onChange={(e) => {
               let value = e.target.value;
+              console.log(`Select changed to ${value}`)
               switch (value) {
                 case "certificate":
                   setSelectedDocument(<CertificateOfOwnership data={[
@@ -466,7 +677,20 @@ function Dashboard() {
                   setFileName("certificate-of-ownership.pdf");
                   break;
                 case "analytical-slip":
-                  setSelectedDocument(<AnalyticalSlip data={[]} signature={signature} />);
+                  setSelectedDocument(<AnalyticalSlip data={{
+                    nature: landData.nature,
+                    size: landData.land_size,
+                    location: landData.land_location,
+                    coordinates: landData.coordinates,
+                    fullName: landData.owner_name,
+                    profession: landData.profession,
+                    address: landData.address,
+                    dob: landData.dob,
+                    fatherName: landData.father_name,
+                    pob: landData.pob,
+                    motherName: landData.mother_name,
+                    deliveryDate: landData.delivery_date
+                }} signature={signature} />);
                   setFileName("analytical-slip.pdf");
                   break;
                 // Handle other PDF types
@@ -524,6 +748,8 @@ function Dashboard() {
       </div>
     </div>
   );
-}
+};  
+
+
 
 export default Dashboard;

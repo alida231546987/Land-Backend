@@ -13,7 +13,7 @@ from rest_framework.authtoken.models import Token
 from .models import Profile, TransferOwnership
 
 from rest_framework import serializers
-from .models import LandTitle, PDFFile
+from .models import LandTitle, PDFFile ,NotarialDeed, UserEmail
 
 
 
@@ -146,3 +146,28 @@ class LandTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandTitle
         fields = ['id', 'surface_area', 'coordinates']
+        
+
+class NotarialDeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotarialDeed
+        fields = "__all__"
+        
+
+
+class UserEmailSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(required=False)
+    class Meta:
+        model = UserEmail
+        fields = ['recipient', 'message', 'file']
+        
+    def validate_file(self, value):
+        if value:
+            max_size = 25 * 1024 * 1024  # 25MB limit
+            if value.size > max_size:
+                raise serializers.ValidationError('File size exceeds 25MB limit.')
+        return value
+        
+
+
+

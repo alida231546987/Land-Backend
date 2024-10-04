@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "geolib": "^3.3.4"
+    "geolib": "^3.3.4",
+    "sendgrid": "^5.2.3"
   }
 }

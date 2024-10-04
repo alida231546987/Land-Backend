@@ -1,50 +1,43 @@
+// ./PDFs/NotarialDeed/notarialdeed.js
 import { StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    fontFamily: 'Helvetica',
+    fontSize: 12,
   },
   header: {
-    alignItems: 'center',
-    marginBottom: 20,
     textAlign: 'center',
+    marginBottom: 10,
   },
   titleSection: {
-    alignItems: 'center',
-    marginBottom: 20,
     textAlign: 'center',
+    marginBottom: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 5,
   },
   subtitle: {
-    fontSize: 14,
-    fontStyle: 'italic',
-    marginBottom: 10,
+    fontSize: 16,
+    marginTop: 5,
   },
   referredSection: {
     fontSize: 12,
-    marginBottom: 20,
+    marginTop: 5,
   },
   bodySection: {
-    marginBottom: 20,
+    marginTop: 20,
+    lineHeight: 1.5,
+  },
+  signatureWrapper: {
+    marginTop: 30,
+    alignItems: 'flex-end',
   },
   signatures: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 30,
-  },
-  signatureColumn: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  signatureImage: {
-    width: 100,
+    width: 200,
     height: 50,
-    marginTop: 5,
-    border: '1px solid black', // Optional: to visualize the boundary of the image
   },
 });
 

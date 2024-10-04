@@ -2,12 +2,70 @@ import SignatureCanvas from 'react-signature-canvas';
 import React, { useState, useEffect, useRef } from 'react';
 import { saveAs } from 'file-saver'; // Import file-saver for saving files locally
 import './landbuyer.css'; // Import the CSS file for styling
+import axios from 'axios';
+import { API_URL } from '../../../utils/constants';
+
 
 function Dashboard() {
   // State to manage the sidebar collapsed state
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const [dashboard, setDashboard] = useState("");
+
+  const [user, setUser] = useState([]); // Users state
+  const [files, setFiles] = useState([]); // Files state
+  const [destinationDashboard, setDestinationDashboard] = useState(''); // Define state for destinationDashboard
+  const [handleUplaod, setHandleUpload] = useState(''); // Define state for destinationDashboard
+  const [file, setFile] = useState(null);
+
+   // getting list of users from the backend
+   useEffect(() => {
+    axios.get(`${API_URL}/api/users`)
+    .then((response) => setUser(response.data))
+    .catch((error) => {
+      console.log("Error getting users from DB");
+    })
+  }, []);
+
+  function FileUpload() {
+    const [destinationDashboard, setDestinationDashboard] = useState('');
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('destination_dashboard', destinationDashboard);
+
+    const response = await fetch('http://localhost:8000/api/pdfs/', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    console.log("Request completed")
+    console.log(data)
+    alert("File sent successfully");
+  };
+
+  const fetchFiles = async () => {
+    axios.get(`${API_URL}/api/pdfs`)
+    .then((response) => setFiles(response.data))
+    .catch((error) => {
+      console.log("Error getting files from DB");
+    })
+  }
+
+  const showContent = (section) => {
+    setActiveSection(section);
+    if (section === 'files') {
+      fetchFiles(); // Fetch files when "Files" section is active
+    }
+  };
 
   // State to manage which content section is active
   const [activeSection, setActiveSection] = useState('home');
@@ -24,7 +82,7 @@ function Dashboard() {
   };
 
   // Function to show content based on sidebar selection
-  const showContent = (section) => {
+  const showContents = (section) => {
     setActiveSection(section);
   };
 
@@ -70,27 +128,27 @@ function Dashboard() {
         <h2>Dashboard</h2>
         <ul>
           <li className={activeSection === 'signature' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('signature')}>
+            <a href="#" onClick={() => showContents('signature')}>
               <i className="fa fa-home"></i> Sign here
             </a>
           </li>
           <li className={activeSection === 'messages' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('messages')}>
+            <a href="#" onClick={() => showContents('messages')}>
               <i className="fa fa-envelope"></i> Messages
             </a>
           </li>
           <li className={activeSection === 'notifications' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('notifications')}>
+            <a href="#" onClick={() => showContents('notifications')}>
               <i className="fa fa-bell"></i> Notifications
             </a>
           </li>
           <li className={activeSection === 'complaint' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('complaint')}>
+            <a href="#" onClick={() => showContents('complaint')}>
               <i className="fa fa-user-circle"></i> Complaint
             </a>
           </li>
           <li className={activeSection === 'settings' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('settings')}>
+            <a href="#" onClick={() => showContents('settings')}>
               <i className="fa fa-cog"></i> Settings
             </a>
           </li>
@@ -133,9 +191,31 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className={`content ${activeSection === 'messages' ? 'active' : ''}`} id="messages">
-        <h2>Messages</h2>
-        </div>
+        {/* Messages Section */}
+        {activeSection === 'messages' && (
+          <div className="content active" id="messages">
+            <input type="file" onChange={handleFileChange} />
+            <input
+              type="text"
+              placeholder="Destination Dashboard"
+              value={destinationDashboard}
+              onChange={(e) => setDestinationDashboard(e.target.value)}
+            />
+
+            <div>
+              <label htmlFor="">User</label>
+              <select value={user} onChange={(e) => setUser(e.target.value)}>
+                <option value={null}>---</option>
+                {
+                  user && Array.isArray(user) && user.map((u, index) => (
+                    <option value={u.id} key={index}>{u.username}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <button onClick={handleUpload}>Upload PDF</button>
+          </div>
+        )};
 
         <div className={`content ${activeSection === 'notifications' ? 'active' : ''}`} id="notifications">
           <h2>Notifications</h2>

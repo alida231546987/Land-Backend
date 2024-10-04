@@ -1,8 +1,20 @@
-import React from 'react';
+// ./PDFs/NotarialDeed/notarialdeed.jsx
+import React, { useEffect } from 'react';
 import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
-import styles from './notarialdeed.js'; // Import the styles
+import styles from './notarialdeed.js'; // Ensure this path is correct
 
-export const NotarialDeed = ({ data }) => {
+export const NotarialDeed = ({ data, signature }) => {
+  useEffect(() => {
+    if (signature) {
+      console.log("Rendering Notarial deed with signature: ", signature);
+    } else {
+      console.log("No signature provided.");
+    }
+    if (data) {
+      console.log("Rendering NotarialDeed with data:", data);
+    }
+  }, [signature, data]);
+
   return (
     <Document>
       <Page style={styles.container}>
@@ -23,45 +35,37 @@ export const NotarialDeed = ({ data }) => {
         <View style={styles.titleSection}>
           <Text style={styles.title}>ACTE NOTARIENNE</Text>
           <Text style={styles.subtitle}>NOTARIAL DEED</Text>
-          <Text style={styles.referredSection}>Mention a la section (Referred to in section): __________</Text>
+          <Text style={styles.referredSection}>
+            Mention a la section (Referred to in section): __________
+          </Text>
         </View>
 
         {/* Body */}
         <View style={styles.bodySection}>
           <Text>
             Following the acte No 6175 of the 31/01/2007 received by the undersigned notary {"\n"}
-            {data.notaryName} {"\n"}
+            {data.notary_name} {"\n"}
             {"\n"}
             I therefore stand as a witness that {"\n"}
-            Mr {data.sellerName} {"\n"}
-            sold his piece of land of size {data.landSize} {"\n"}
-            located at {data.landLocation} to {"\n"}
-            Mr {data.buyerName} {"\n"}
-            for the price of {data.landPrice} {"\n"}
-            on the {data.presentDate} {"\n"}
+            Mr {data.seller_name} {"\n"}
+            sold his piece of land of size {data.land_size} {"\n"}
+            located at {data.land_location} to {"\n"}
+            Mr {data.buyer_name} {"\n"}
+            for the price of {data.land_price} {"\n"}
+            on the {data.present_date} {"\n"}
           </Text>
         </View>
 
-        {/* Signatures */}
-        <View style={styles.signatures}>
-          <View style={styles.signatureColumn}>
-            <Text>Sellers Signature</Text>
-            {data.sellerSignature && (
-              <Image style={styles.signatureImage} src={data.sellerSignature} />
-            )}
-          </View>
-          <View style={styles.signatureColumn}>
-            <Text>Buyers Signature</Text>
-            {data.buyerSignature && (
-              <Image style={styles.signatureImage} src={data.buyerSignature} />
-            )}
-          </View>
-          <View style={styles.signatureColumn}>
-            <Text>Notary Signature</Text>
-            {data.notarySignature && (
-              <Image style={styles.signatureImage} src={data.notarySignature} />
-            )}
-          </View>
+        {/* Signature */}
+        <View style={styles.signatureWrapper}>
+          {signature ? (
+            <Image style={styles.signatures} src={signature} />
+          ) : (
+            <>
+              <Text>No signature available</Text>
+              <View style={{ width: '100%', height: '50px' }} />
+            </>
+          )}
         </View>
       </Page>
     </Document>

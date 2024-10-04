@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 export const CertificateOfOwnership = ({ data, signature, item }) => {
   useEffect(() => {
     if (signature) {
-      console.log("Rendering CertifOfOwnership with signature: ", signature);
+      // console.log("Rendering CertifOfOwnership with signature: ", signature);
     } else {
       console.log("No signature provided.");
     }

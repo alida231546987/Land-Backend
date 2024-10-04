@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 5,
+    fontSize: 20,
     textAlign: 'center',
     marginBottom: 10,
     marginTop: 20,
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
   },
   title: {
-    fontSize: 5,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
   },
   header: {
-    fontSize: 5,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     maxWidth: 1200,
   },
   number: {
-    fontSize: 5,
+    fontSize: 20,
     marginTop: 20,
   },
   innerFrame: {
@@ -92,21 +92,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    fontSize: 5,
+    fontSize: 20,
     marginBottom: 20,
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 5,
+    fontSize: 20,
     textAlign: 'center',
     marginBottom: 20,
   },
   propertyInfo: {
-    fontSize: 5,
+    fontSize: 10,
     marginBottom: 10,
   },
   ownerInfoHeader: {
-    fontSize: 5,
+    fontSize: 10,
     marginTop: 20,
     fontWeight: 'bold',
   },

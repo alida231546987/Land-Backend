@@ -117,7 +117,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # This is the default React development server URL    
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (development only)
+
 
 
 # Internationalization
@@ -165,3 +166,58 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+# Email configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # e.g., for Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False 
+EMAIL_HOST_USER = 'nkwetchoulamagorachellealida@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'whvroozzdbgybaek'  # Replace with your email password or app password
+DEFAULT_FROM_EMAIL = 'nkwetchoulamagorachellealida@gmail.com'
+
+# settings.py
+
+# settings.py
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Keep the default loggers
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',  # Set to 'INFO' or 'ERROR' in production
+            'propagate': True,
+        },
+        'landtitles': {  # Replace with your actual app name
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+

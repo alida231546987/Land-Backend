@@ -19,6 +19,14 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
+#For Emails
+from django.core.mail import EmailMessage
+from .serializers import UserEmailSerializer
+from django.conf import settings
+from .models import UserEmail
+import logging
+
+
 #Geolocation Api
 from django.http import JsonResponse
 from django.http.response import JsonResponse
@@ -26,6 +34,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import UserLocation
 from django.shortcuts import render
+from rest_framework.parsers import JSONParser
 
 from django.http.response import Http404
 
@@ -35,12 +44,12 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 
 #For land titles
-from .models import LandTitle, TransferOwnership
+from .models import LandTitle, TransferOwnership , NotarialDeed, UserEmail
 from .serializers import OwnershipTransferSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import LandTitleSerializer, PDFFileSerializer
+from .serializers import LandTitleSerializer, PDFFileSerializer , NotarialDeedSerializer
 
 #Files Shared
 from django.views.decorators.csrf import csrf_exempt
@@ -150,7 +159,6 @@ class UserViewSet(viewsets.ModelViewSet):
     
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # permission_classes = [permissions.ReadOnly]
     
 
 @api_view(['POST'])
@@ -311,6 +319,23 @@ def update_land_title(request):
         return Response({'status': 'Land title updated'}, status=status.HTTP_200_OK)
     except LandTitle.DoesNotExist:
         return Response({'error': 'Land title not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+#Verify land tite existing coordinates
+@api_view(['POST'])
+def verify_coordinates(request):
+    coordinates = request.data.get('coordinates')
+    
+    if not coordinates:
+        return Response({'error': 'No coordinates provided.'}, status=400)
+
+    # Check if the coordinates exist in the LandTitle model
+    existing_coordinates = LandTitle.objects.filter(coordinates__in=coordinates)
+    
+    if existing_coordinates.exists():
+        existing_coords_list = existing_coordinates.values_list('coordinates', flat=True)
+        return Response({'exists': True, 'existing_coordinates': list(existing_coords_list)}, status=200)
+
+    return Response({'exists': False}, status=200)
 
 #Transfer ownership form view
 
@@ -354,6 +379,10 @@ class TransferOwnershipRequestViewSet(viewsets.ModelViewSet):
     queryset = TransferOwnership.objects.all()
     serializer_class = OwnershipTransferSerializer
     
+class NotarialDeedViewSet(viewsets.ModelViewSet):
+    queryset = NotarialDeed.objects.all()
+    serializer_class = NotarialDeedSerializer
+    
 class PDFFileViewSet(viewsets.ModelViewSet):
     queryset = PDFFile.objects.all()
     serializer_class = PDFFileSerializer
@@ -368,7 +397,43 @@ class PDFFileViewSet(viewsets.ModelViewSet):
         
         return Response(data=data)
 
-#Files Sharing
+
+
+
+logger = logging.getLogger('landtitles')
+
+class UserEmailViewSet(viewsets.ModelViewSet):
+    queryset = UserEmail.objects.all()
+    serializer_class = UserEmailSerializer
+
+    @action(detail=False, methods=['post'], url_path='send-email')
+    def send_email(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            print('Email serializer is valid, sending mail')
+            recipient = serializer.validated_data['recipient']
+            message = serializer.validated_data['message']
+            file = serializer.validated_data.get('file', None)
+
+            email = EmailMessage(
+                subject='New Message from React App',
+                body=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,  # Use the default from email
+                to=[recipient],
+            )
+            if file:
+                email.attach(file.name, file.read(), file.content_type)
+
+            try:
+                email.send(fail_silently=False)  # Make sure fail_silently is False to see errors
+                serializer.save()  # Save the email record in the database
+                
+                print('Email sent and saved successfully')
+                
+                return Response({'success': 'Email sent successfully'}, status=200)
+            except Exception as e:
+                return Response({'error': str(e)}, status=500)
+        return Response(serializer.errors, status=400)
 # @csrf_exempt
 # def upload_pdf(request):
 #     if request.method == 'POST':

@@ -114,4 +114,27 @@ class PDFFile(models.Model):
 
     def __str__(self):
         return self.file.name
+    
 
+class NotarialDeed(models.Model):
+    notarial_id = models.CharField(max_length=100 ,null=True)
+    notary_name = models.CharField(max_length=255, null=True)
+    seller_name = models.CharField(max_length=255, null=True)
+    land_size = models.CharField(max_length=100, null=True)  # You may adjust the max_length as needed
+    land_location = models.CharField(max_length=255, null=True)
+    buyer_name = models.CharField(max_length=255, null=True)
+    land_price = models.DecimalField(max_digits=100, decimal_places=22, null=True)  # Change according to your needs
+    present_date = models.DateField(null=False)
+
+    def __str__(self):
+        return f'Notarial Deed for {self.seller_name} to {self.buyer_name}'
+
+
+class UserEmail(models.Model):
+    recipient = models.EmailField()
+    message = models.TextField()
+    file = models.FileField(upload_to='attachments/', null=True, blank=True)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Email to {self.recipient} at {self.sent_at}"

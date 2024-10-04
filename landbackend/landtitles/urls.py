@@ -12,7 +12,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import AuthViewSet, OwnershipTransferViewSet, LandTitleViewSet, PDFFileViewSet, UserViewSet
+from .views import AuthViewSet, OwnershipTransferViewSet, LandTitleViewSet, PDFFileViewSet, UserViewSet, NotarialDeedViewSet, UserEmailViewSet
 from .views import transfer_ownership
 
 urlpatterns = [
@@ -29,7 +29,14 @@ ownership_transfer_routes = router.register("api/transfer-ownership", OwnershipT
 
 landtitle_routes = router.register("api/landtitles", LandTitleViewSet, basename='landtitles')
 
+router.register(r"api/send-email/", UserEmailViewSet, basename='useremail')
+
+notarialdeed_routes =router.register("api/notarialdeed", NotarialDeedViewSet, basename='notarialdeed')
+
 router.register("api/pdfs/", PDFFileViewSet, basename='pdf-files')
+
+
+
 
 user_routes = router.register("api/users", UserViewSet, basename='users')
 
@@ -47,12 +54,13 @@ urlpatterns = [
     path('save-location/', views.save_location, name='save_location'),
     # path('api/transfer-ownership/', transfer_ownership, name='transfer_ownership'),
     path('', views.index, name='index'),
+]
     # path('', FrontendAppView.as_view(), name='home'),
     # path('api/', include(router.urls)),
     # path('', include(router.urls)),
     # path('upload_pdf/', views.upload_pdf, name='upload_pdf'),
     # path('fetch_pdfs/<str:dashboard>/', views.fetch_pdfs, name='fetch_pdfs'),
-]
+
 
 urlpatterns += router.urls
 if settings.DEBUG:
