@@ -17,62 +17,34 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    width: 250px; /* Initial width of sidebar */
-    background-color: green; /* Dark background color */
+    width: 255px; /* Initial width of sidebar */
+    background-color: #28a745; /* Dark background color */
     padding-top: 20px; /* Space at the top for title */
     transition: width 0.3s; /* Smooth transition for collapsing */
     overflow: hidden; /* Hide overflow content */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+    justify-content: flex-start; /* Keep items at the start of the sidebar */
 }
 
-.sidebar.collapsed {
-    width: 0px; /* Reduced width when collapsed */
+.sidebar-item {
+    display: flex; /* Use flexbox for horizontal alignment */
+    align-items: center; /* Vertically center items */
+    padding: 10px 15px; /* Add padding for spacing */
+    color: white; /* White text color */
+    width: 100%; /* Ensure the item takes full width */
 }
 
-.sidebar h2 {
-    color: #fff;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.5em;
+.sidebar-item-icon {
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 1.5rem; /* Adjust icon size */
 }
 
-/* Unordered list style in sidebar */
-.sidebar ul {
-    list-style: none;
-    padding: 0;
+.sidebar-item-text {
+    font-size: 1rem; /* Adjust text size */
 }
 
-.sidebar ul li {
-    padding: 15px;
-    text-align: left;
-}
-
-.sidebar ul li a {
-    color: white; /* Light gray text color */
-    display: block;
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s;
-    cursor: pointer;
-}
-
-.sidebar ul li a:hover {
-    color: white; /* Change to white on hover */
-}
-
-.sidebar ul li.active a {
-    color: #fff;
-    background-color: yellowgreen; /* Darker background for active item */
-    border-radius: 5px; /* Rounded corners */
-}
-
-/* Sidebar and text styles when collapsed */
-.sidebar.collapsed h2,
-.sidebar.collapsed ul li a {
-    text-align: center;
-}
-
-.sidebar.collapsed ul li a {
-    padding: 15px 0;
-}
 
 /* Main content styles */
 .main-content {
@@ -88,8 +60,10 @@ body {
 
 /* Header style */
 .header {
-    background-color: green; /* Primary blue color */
     color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 15px;
     font-size: 50px;
     position: relative;

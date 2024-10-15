@@ -3,7 +3,7 @@ import './Login.css';
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import LogiImage from '../../../assets/land.jpg';
+import LogiImage from '../../../assets/applogo.png';
 
 const API_URL = `http://localhost:8000`;
 
@@ -31,7 +31,7 @@ const Login = () => {
         .then(async (response) => {
             if (response.status === 200) {
                 let data = await response.json();
-                console.log(`The data from the server:`, data);
+                sessionStorage.setItem('fragmark_user', JSON.stringify(data))
 
                 const { role } = data;
                 switch (role) {

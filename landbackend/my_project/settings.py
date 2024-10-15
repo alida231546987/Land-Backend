@@ -9,8 +9,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,18 +26,28 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Moved to top
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+]
+
+# CORS Configuration
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins
+
+# Remove or comment out CORS_ALLOWED_ORIGINS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    # "*"  # Remove this line
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
-        "rest_framework.authentication.SessionAuthentication",
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
 
@@ -53,7 +61,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # Important for admin
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -64,20 +72,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'my_project.wsgi.application'
 ASGI_APPLICATION = 'my_project.asgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'land',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': '',  # Set to empty string for localhost
-#         'PORT': '3307',  # Set to empty string for default
-#     }
-# }
+# SQLite configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Database engine for SQLite
@@ -85,14 +81,10 @@ DATABASES = {
     }
 }
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -108,22 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# settings.py
-#AUTH_USER_MODEL = 'auth.CustomUser'
-
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # This is the default React development server URL
-    "http://localhost:5173",  # This is the default React development server URL    
-]
-
-CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (development only)
-
-
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -132,32 +109,15 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+# Static files
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'landtitles/static'),  # Replace 'landtitles' with your app name if different
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# settings.py
-import os
-
-STATIC_URL = '/static/'
-
-# Ensure Django knows where to look for the static files
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'landtitles/static'),  # Replace 'myapp' with your actual app name
-]
-
-
-#Channels layers permittting me to establish a messaging chat
+# Channels configuration
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -167,7 +127,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-
 # Email configurations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # e.g., for Gmail
@@ -175,49 +134,25 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False 
 EMAIL_HOST_USER = 'nkwetchoulamagorachellealida@gmail.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'whvroozzdbgybaek'  # Replace with your email password or app password
-DEFAULT_FROM_EMAIL = 'nkwetchoulamagorachellealida@gmail.com'
+EMAIL_HOST_PASSWORD = 'oegzhoyhbwrwnben'  # Replace with your email password or app password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# settings.py
-
-# settings.py
-# settings.py
-
+# Logging configuration
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,  # Keep the default loggers
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
+    'disable_existing_loggers': False,
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'file': {
+        'landtitles_file': {
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'debug.log',
-            'formatter': 'verbose',
+            'filename': 'landtitles.log',
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',  # Set to 'INFO' or 'ERROR' in production
-            'propagate': True,
-        },
-        'landtitles': {  # Replace with your actual app name
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
+        'landtitles': {
+            'handlers': ['landtitles_file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     },
 }
-

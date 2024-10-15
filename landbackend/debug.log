@@ -1705,3 +1705,512 @@ INFO 2024-10-04 10:19:06,078 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
 INFO 2024-10-04 10:19:06,078 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
 INFO 2024-10-04 10:19:08,327 basehttp "GET /api/landtitles/2222 HTTP/1.1" 200 590
 INFO 2024-10-04 10:21:20,732 basehttp "POST /api/send-email//send-email HTTP/1.1" 200 8362
+INFO 2024-10-07 20:41:53,734 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 20:42:21,187 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 20:43:23,010 basehttp "OPTIONS /api/accounts/login HTTP/1.1" 200 0
+INFO 2024-10-07 20:43:24,303 basehttp "POST /api/accounts/login HTTP/1.1" 200 400
+INFO 2024-10-07 20:43:24,502 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 20:43:24,502 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 20:43:24,512 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 20:43:24,517 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 20:44:16,364 basehttp "POST /api/send-email/ HTTP/1.1" 201 152
+INFO 2024-10-07 20:51:53,893 basehttp "GET /api/send-email/ HTTP/1.1" 200 20330
+INFO 2024-10-07 20:51:53,924 basehttp "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,925 basehttp "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,926 basehttp "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,940 basehttp "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,946 basehttp "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,947 basehttp "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,955 basehttp "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,962 basehttp "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,964 basehttp "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,978 basehttp "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:53,988 basehttp "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2024-10-07 20:51:54,027 basehttp "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+WARNING 2024-10-07 20:51:54,160 log Not Found: /favicon.ico
+WARNING 2024-10-07 20:51:54,162 basehttp "GET /favicon.ico HTTP/1.1" 404 15230
+INFO 2024-10-07 20:52:35,188 basehttp "POST /api/send-email/ HTTP/1.1" 201 10128
+INFO 2024-10-07 21:21:39,671 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 21:21:39,679 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 21:21:39,679 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 21:21:39,686 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 21:22:42,684 basehttp "POST /api/send-email/ HTTP/1.1" 201 10077
+INFO 2024-10-07 21:24:58,282 basehttp "POST /api/send-email/ HTTP/1.1" 201 144
+INFO 2024-10-07 21:27:00,158 basehttp "GET /api/landtitles/44444555 HTTP/1.1" 200 548
+INFO 2024-10-07 21:30:14,318 basehttp "OPTIONS /api/landtitles HTTP/1.1" 200 0
+INFO 2024-10-07 21:30:14,340 basehttp "POST /api/landtitles HTTP/1.1" 201 440
+INFO 2024-10-07 21:34:48,525 basehttp "POST /api/send-email/ HTTP/1.1" 201 151
+INFO 2024-10-07 21:35:02,494 basehttp "POST /api/send-email/ HTTP/1.1" 201 9856
+INFO 2024-10-07 21:35:29,050 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 21:35:29,054 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 21:35:29,068 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 21:35:29,074 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+WARNING 2024-10-07 21:35:44,997 log Not Found: /api/landtitles/
+WARNING 2024-10-07 21:35:44,998 basehttp "GET /api/landtitles/ HTTP/1.1" 404 15242
+INFO 2024-10-07 21:35:53,430 basehttp "GET /api/landtitles/2222 HTTP/1.1" 200 590
+INFO 2024-10-07 21:46:07,728 basehttp "GET /api/landtitles/2222 HTTP/1.1" 200 590
+INFO 2024-10-07 22:03:33,098 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:03:33,102 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:03:38,727 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:03:38,728 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:03:38,738 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:03:38,738 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:07:49,920 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:07:49,921 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:07:49,936 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:07:49,937 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:09:01,977 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:09:01,979 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:09:01,991 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:09:01,993 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:09:16,791 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:09:16,792 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:09:16,803 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:09:16,813 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:12:22,925 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:12:22,925 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:12:22,937 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:12:22,937 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:13:09,916 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-07 22:13:09,916 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:13:09,924 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-07 22:13:09,925 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-08 00:06:36,227 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-08 00:06:36,227 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-08 00:06:36,234 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-08 00:06:36,235 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-08 00:18:08,008 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-08 00:18:08,010 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-08 00:18:08,013 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-08 00:18:08,016 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 16:52:54,035 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 16:58:06,609 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 16:58:06,609 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-09 16:58:06,618 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-09 16:58:06,618 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 17:01:30,124 basehttp "GET /media/pdfs/East_0u6ueQ9.gpkg/ HTTP/1.1" 200 323584
+INFO 2024-10-09 17:01:38,176 basehttp "GET /media/pdfs/Writing_Task_2.docx/ HTTP/1.1" 200 23097
+INFO 2024-10-09 17:30:09,179 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 17:30:27,892 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 17:30:31,187 basehttp "GET / HTTP/1.1" 200 625
+WARNING 2024-10-09 17:30:31,285 basehttp "GET /static/js/main.jsx HTTP/1.1" 404 1847
+WARNING 2024-10-09 17:30:31,295 log Not Found: /favicon.ico
+WARNING 2024-10-09 17:30:31,296 basehttp "GET /favicon.ico HTTP/1.1" 404 15230
+INFO 2024-10-09 17:30:52,017 basehttp "GET /admin/main/student/ HTTP/1.1" 302 0
+INFO 2024-10-09 17:30:52,221 basehttp "GET /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4186
+INFO 2024-10-09 17:30:52,409 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2024-10-09 17:30:52,417 basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 22092
+INFO 2024-10-09 17:30:52,419 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2804
+INFO 2024-10-09 17:30:52,419 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2024-10-09 17:30:52,423 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 17972
+INFO 2024-10-09 17:30:52,428 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2024-10-09 17:30:52,429 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2024-10-09 17:30:59,047 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4363
+INFO 2024-10-09 17:31:15,827 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4350
+INFO 2024-10-09 17:31:39,700 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4348
+INFO 2024-10-09 17:32:36,332 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4357
+INFO 2024-10-09 17:32:45,509 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4357
+INFO 2024-10-09 17:32:54,013 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4357
+INFO 2024-10-09 17:33:04,654 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4357
+INFO 2024-10-09 17:33:36,517 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4357
+INFO 2024-10-09 17:33:47,960 basehttp "POST /admin/login/?next=/admin/main/student/ HTTP/1.1" 200 4347
+INFO 2024-10-09 17:37:44,204 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 17:37:53,260 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2024-10-09 17:37:53,351 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4160
+INFO 2024-10-09 17:38:07,505 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2024-10-09 17:38:07,555 basehttp "GET /admin/ HTTP/1.1" 200 9535
+INFO 2024-10-09 17:38:07,624 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2024-10-09 17:38:07,638 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2024-10-09 17:38:07,639 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2024-10-09 17:38:33,478 basehttp "GET /admin/auth/user/ HTTP/1.1" 200 18946
+INFO 2024-10-09 17:38:33,504 basehttp "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2024-10-09 17:38:33,505 basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9097
+INFO 2024-10-09 17:38:33,517 basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+INFO 2024-10-09 17:38:33,519 basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2024-10-09 17:38:33,525 basehttp "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2024-10-09 17:38:33,528 basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2024-10-09 17:38:33,532 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:38:33,534 basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2024-10-09 17:38:33,546 basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2024-10-09 17:38:33,556 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2024-10-09 17:38:33,560 basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2024-10-09 17:38:33,566 basehttp "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2024-10-09 17:38:33,574 basehttp "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2024-10-09 17:38:33,595 basehttp "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2024-10-09 17:38:33,603 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2024-10-09 17:38:33,607 basehttp "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2024-10-09 17:38:33,609 basehttp "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO 2024-10-09 17:39:06,063 basehttp "GET /admin/landtitles/landtitle/add/ HTTP/1.1" 200 19879
+INFO 2024-10-09 17:39:06,081 basehttp "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2024-10-09 17:39:06,082 basehttp "GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+INFO 2024-10-09 17:39:06,085 basehttp "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2024-10-09 17:39:06,090 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:06,098 basehttp "GET /static/admin/css/forms.css HTTP/1.1" 200 8710
+INFO 2024-10-09 17:39:06,099 basehttp "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2024-10-09 17:39:06,115 basehttp "GET /static/admin/css/widgets.css HTTP/1.1" 200 11564
+INFO 2024-10-09 17:39:06,173 basehttp "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+INFO 2024-10-09 17:39:06,173 basehttp "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+INFO 2024-10-09 17:39:15,138 basehttp "GET /admin/landtitles/landtitle/ HTTP/1.1" 200 12493
+INFO 2024-10-09 17:39:15,158 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:20,612 basehttp "GET /admin/landtitles/landtitle/2222/change/ HTTP/1.1" 200 20603
+INFO 2024-10-09 17:39:20,629 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:30,613 basehttp "GET /admin/landtitles/userlocation/ HTTP/1.1" 200 9965
+INFO 2024-10-09 17:39:30,630 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:32,712 basehttp "GET /admin/landtitles/customuser/ HTTP/1.1" 200 9916
+INFO 2024-10-09 17:39:32,729 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:36,513 basehttp "GET /admin/auth/user/ HTTP/1.1" 200 18946
+INFO 2024-10-09 17:39:36,539 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:40,612 basehttp "GET /admin/auth/group/ HTTP/1.1" 200 10240
+INFO 2024-10-09 17:39:40,626 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 17:39:42,439 basehttp "GET /admin/authtoken/tokenproxy/ HTTP/1.1" 200 12524
+INFO 2024-10-09 17:40:10,301 basehttp "GET /admin/landtitles/landtitle/ HTTP/1.1" 200 12493
+INFO 2024-10-09 17:40:10,323 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2024-10-09 21:08:45,506 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-09 21:08:45,508 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 21:08:45,556 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 21:08:45,580 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 783
+INFO 2024-10-09 21:09:26,458 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 21:11:08,798 basehttp "GET /api/landtitles/2222 HTTP/1.1" 200 590
+INFO 2024-10-09 21:11:29,468 basehttp "GET /api/landtitles/1212 HTTP/1.1" 200 664
+WARNING 2024-10-09 21:13:32,086 log Not Found: /api/
+WARNING 2024-10-09 21:13:32,089 basehttp "GET /api/ HTTP/1.1" 404 15209
+WARNING 2024-10-09 21:13:32,230 log Not Found: /favicon.ico
+WARNING 2024-10-09 21:13:32,232 basehttp "GET /favicon.ico HTTP/1.1" 404 15230
+WARNING 2024-10-09 21:13:35,945 log Not Found: /api/users/
+WARNING 2024-10-09 21:13:35,947 basehttp "GET /api/users/ HTTP/1.1" 404 15227
+WARNING 2024-10-09 21:13:48,817 log Not Found: /api/users/
+WARNING 2024-10-09 21:13:48,818 basehttp "GET /api/users/ HTTP/1.1" 404 15227
+WARNING 2024-10-09 21:13:54,250 log Not Found: /api/user
+WARNING 2024-10-09 21:13:54,252 basehttp "GET /api/user HTTP/1.1" 404 15221
+WARNING 2024-10-09 21:13:58,738 log Not Found: /api/user/
+WARNING 2024-10-09 21:13:58,740 basehttp "GET /api/user/ HTTP/1.1" 404 15224
+INFO 2024-10-09 21:15:10,641 basehttp "GET /api/send-email/ HTTP/1.1" 200 22195
+INFO 2024-10-09 21:15:18,639 basehttp "GET /api/pdfs/ HTTP/1.1" 200 12462
+WARNING 2024-10-09 21:15:24,308 log Not Found: /api/users/
+WARNING 2024-10-09 21:15:24,310 basehttp "GET /api/users/ HTTP/1.1" 404 15227
+INFO 2024-10-09 21:19:32,260 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\urls.py changed, reloading.
+INFO 2024-10-09 21:19:34,104 autoreload Watching for file changes with StatReloader
+WARNING 2024-10-09 21:24:38,400 log Not Found: /api/accounts/
+WARNING 2024-10-09 21:24:38,402 basehttp "GET /api/accounts/ HTTP/1.1" 404 15236
+WARNING 2024-10-09 21:24:44,131 log Method Not Allowed: /api/accounts/login
+WARNING 2024-10-09 21:24:44,133 basehttp "GET /api/accounts/login HTTP/1.1" 405 8522
+WARNING 2024-10-09 21:24:51,933 log Method Not Allowed: /api/accounts/signup
+WARNING 2024-10-09 21:24:51,935 basehttp "GET /api/accounts/signup HTTP/1.1" 405 10199
+WARNING 2024-10-09 21:25:03,560 log Not Found: /api/accounts/users
+WARNING 2024-10-09 21:25:03,562 basehttp "GET /api/accounts/users HTTP/1.1" 404 15251
+WARNING 2024-10-09 21:25:06,939 log Not Found: /api/accounts/users/
+WARNING 2024-10-09 21:25:06,941 basehttp "GET /api/accounts/users/ HTTP/1.1" 404 15254
+WARNING 2024-10-09 21:25:22,084 log Not Found: /api/profiles
+WARNING 2024-10-09 21:25:22,086 basehttp "GET /api/profiles HTTP/1.1" 404 15233
+WARNING 2024-10-09 21:25:25,715 log Not Found: /api/profiles/
+WARNING 2024-10-09 21:25:25,716 basehttp "GET /api/profiles/ HTTP/1.1" 404 15236
+WARNING 2024-10-09 21:25:33,605 log Not Found: /api/users/
+WARNING 2024-10-09 21:25:33,607 basehttp "GET /api/users/ HTTP/1.1" 404 15227
+INFO 2024-10-09 21:30:05,842 basehttp "GET /api/send-email/ HTTP/1.1" 200 22195
+INFO 2024-10-09 21:36:05,086 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\urls.py changed, reloading.
+INFO 2024-10-09 21:36:06,834 autoreload Watching for file changes with StatReloader
+WARNING 2024-10-09 21:36:23,342 log Not Found: /api/accounts/profile
+WARNING 2024-10-09 21:36:23,344 basehttp "GET /api/accounts/profile HTTP/1.1" 404 15265
+INFO 2024-10-09 21:36:48,661 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\urls.py changed, reloading.
+INFO 2024-10-09 21:36:50,516 autoreload Watching for file changes with StatReloader
+WARNING 2024-10-09 21:37:11,325 log Not Found: /api/profile
+WARNING 2024-10-09 21:37:11,327 basehttp "GET /api/profile HTTP/1.1" 404 17029
+INFO 2024-10-09 21:37:36,813 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\my_project\urls.py changed, reloading.
+INFO 2024-10-09 21:37:38,451 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 21:37:42,613 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\urls.py changed, reloading.
+INFO 2024-10-09 21:37:44,559 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 21:38:05,259 basehttp "OPTIONS /api/transfer-ownership HTTP/1.1" 200 0
+INFO 2024-10-09 21:38:05,344 basehttp "POST /api/transfer-ownership HTTP/1.1" 201 387
+INFO 2024-10-09 21:38:14,692 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 1171
+INFO 2024-10-09 21:38:14,692 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 21:38:14,710 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 1171
+INFO 2024-10-09 21:38:14,710 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-09 23:37:42,091 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 23:43:11,982 autoreload Watching for file changes with StatReloader
+INFO 2024-10-09 23:44:21,567 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\urls.py changed, reloading.
+INFO 2024-10-09 23:44:22,612 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 00:02:48,523 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\models.py changed, reloading.
+INFO 2024-10-10 00:02:49,377 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 00:20:28,505 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 00:20:47,471 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 00:24:27,218 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 00:24:28,343 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 00:24:39,833 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 00:24:40,739 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 00:24:54,307 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 00:24:55,146 autoreload Watching for file changes with StatReloader
+WARNING 2024-10-10 00:25:18,871 log Not Found: /api/payements
+WARNING 2024-10-10 00:25:18,872 basehttp "GET /api/payements HTTP/1.1" 404 16416
+WARNING 2024-10-10 00:25:18,952 log Not Found: /favicon.ico
+WARNING 2024-10-10 00:25:18,953 basehttp "GET /favicon.ico HTTP/1.1" 404 16410
+INFO 2024-10-10 00:25:43,567 basehttp "GET /api/payments HTTP/1.1" 200 12678
+ERROR 2024-10-10 01:01:18,841 log Internal Server Error: /api/payments
+Traceback (most recent call last):
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py", line 493, in create
+    user_id = request.data.get("user", {}).get("id")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+ERROR 2024-10-10 01:01:18,865 basehttp "POST /api/payments HTTP/1.1" 500 104629
+INFO 2024-10-10 01:01:32,635 basehttp "GET /api/payments HTTP/1.1" 200 12678
+INFO 2024-10-10 01:01:36,652 basehttp "GET /api/payments HTTP/1.1" 200 12678
+INFO 2024-10-10 01:01:45,298 basehttp "GET /api/payments HTTP/1.1" 200 12678
+INFO 2024-10-10 01:01:46,535 basehttp "GET /api/payments HTTP/1.1" 200 12678
+INFO 2024-10-10 01:01:47,447 basehttp "GET /api/payments HTTP/1.1" 200 12678
+INFO 2024-10-10 01:01:48,371 basehttp "GET /api/payments HTTP/1.1" 200 12678
+INFO 2024-10-10 01:01:49,564 basehttp "GET /api/payments HTTP/1.1" 200 12678
+ERROR 2024-10-10 01:01:59,547 log Internal Server Error: /api/payments
+Traceback (most recent call last):
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py", line 493, in create
+    user_id = request.data.get("user", {}).get("id")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+ERROR 2024-10-10 01:01:59,554 basehttp "POST /api/payments HTTP/1.1" 500 104619
+INFO 2024-10-10 01:02:10,401 basehttp "GET /api/payments?format=api HTTP/1.1" 200 12744
+ERROR 2024-10-10 01:02:17,927 log Internal Server Error: /api/payments
+Traceback (most recent call last):
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py", line 493, in create
+    user_id = request.data.get("user", {}).get("id")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+ERROR 2024-10-10 01:02:17,936 basehttp "POST /api/payments?format=api HTTP/1.1" 500 105075
+INFO 2024-10-10 12:49:49,224 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 12:49:53,063 basehttp "GET / HTTP/1.1" 200 625
+WARNING 2024-10-10 12:49:53,231 basehttp "GET /static/js/main.jsx HTTP/1.1" 404 1847
+WARNING 2024-10-10 12:49:53,250 log Not Found: /favicon.ico
+WARNING 2024-10-10 12:49:53,251 basehttp "GET /favicon.ico HTTP/1.1" 404 16410
+INFO 2024-10-10 12:49:53,614 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 12:49:55,478 autoreload Watching for file changes with StatReloader
+WARNING 2024-10-10 12:50:02,749 log Not Found: /payements
+WARNING 2024-10-10 12:50:02,751 basehttp "GET /payements HTTP/1.1" 404 16404
+WARNING 2024-10-10 12:50:05,591 log Not Found: /payement
+WARNING 2024-10-10 12:50:05,593 basehttp "GET /payement HTTP/1.1" 404 16401
+WARNING 2024-10-10 12:50:10,661 log Not Found: /api/payement
+WARNING 2024-10-10 12:50:10,664 basehttp "GET /api/payement HTTP/1.1" 404 16413
+WARNING 2024-10-10 12:50:14,816 log Not Found: /api/payements
+WARNING 2024-10-10 12:50:14,817 basehttp "GET /api/payements HTTP/1.1" 404 16416
+INFO 2024-10-10 12:50:30,394 basehttp "GET /api/payments HTTP/1.1" 200 13214
+INFO 2024-10-10 12:50:30,426 basehttp "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,430 basehttp "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,431 basehttp "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,433 basehttp "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,436 basehttp "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,436 basehttp "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,438 basehttp "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,438 basehttp "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,439 basehttp "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,452 basehttp "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,457 basehttp "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+INFO 2024-10-10 12:50:30,457 basehttp "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+ERROR 2024-10-10 12:51:41,398 log Internal Server Error: /api/payments
+Traceback (most recent call last):
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py", line 498, in create
+    "from": "237" + phone,  # Phone number with country code
+            ~~~~~~^~~~~~~
+TypeError: can only concatenate str (not "NoneType") to str
+ERROR 2024-10-10 12:51:41,412 basehttp "POST /api/payments HTTP/1.1" 500 104882
+ERROR 2024-10-10 12:52:07,695 log Internal Server Error: /api/payments
+Traceback (most recent call last):
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py", line 498, in create
+    "from": "237" + phone,  # Phone number with country code
+            ~~~~~~^~~~~~~
+TypeError: can only concatenate str (not "NoneType") to str
+ERROR 2024-10-10 12:52:07,703 basehttp "POST /api/payments HTTP/1.1" 500 104878
+ERROR 2024-10-10 13:18:05,146 log Internal Server Error: /api/payments
+Traceback (most recent call last):
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\environment\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py", line 498, in create
+    "from": "237" + phone,  # Phone number with country code
+            ~~~~~~^~~~~~~
+TypeError: can only concatenate str (not "NoneType") to str
+ERROR 2024-10-10 13:18:05,159 basehttp "POST /api/payments HTTP/1.1" 500 104878
+INFO 2024-10-10 13:26:20,652 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:26:22,576 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:26:29,499 basehttp "GET /api/payments HTTP/1.1" 200 13214
+WARNING 2024-10-10 13:27:17,236 log Bad Request: /api/payments
+WARNING 2024-10-10 13:27:17,237 basehttp "POST /api/payments HTTP/1.1" 400 37
+INFO 2024-10-10 13:28:19,617 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:28:21,285 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:28:26,290 basehttp "GET /api/payments HTTP/1.1" 200 13214
+WARNING 2024-10-10 13:28:42,751 log Bad Request: /api/payments
+WARNING 2024-10-10 13:28:42,754 basehttp "POST /api/payments HTTP/1.1" 400 37
+INFO 2024-10-10 13:28:56,877 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:28:58,356 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:30:30,901 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:30:32,588 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:30:40,561 basehttp "GET /api/payments HTTP/1.1" 200 13214
+WARNING 2024-10-10 13:31:01,201 log Bad Request: /api/payments
+WARNING 2024-10-10 13:31:01,202 basehttp "POST /api/payments HTTP/1.1" 400 37
+INFO 2024-10-10 13:31:08,944 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:31:10,565 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:35:02,161 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:35:03,165 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:38:30,890 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:38:32,693 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:38:38,069 basehttp "GET /api/payments HTTP/1.1" 200 13214
+WARNING 2024-10-10 13:39:00,865 log Bad Request: /api/payments
+WARNING 2024-10-10 13:39:00,866 basehttp "POST /api/payments HTTP/1.1" 400 37
+INFO 2024-10-10 13:39:08,971 basehttp "GET /static/rest_framework/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+WARNING 2024-10-10 13:39:21,061 log Bad Request: /api/payments
+WARNING 2024-10-10 13:39:21,063 basehttp "POST /api/payments HTTP/1.1" 400 37
+WARNING 2024-10-10 13:39:41,184 log Bad Request: /api/payments
+WARNING 2024-10-10 13:39:41,186 basehttp "POST /api/payments HTTP/1.1" 400 37
+INFO 2024-10-10 13:39:47,458 basehttp "GET /api/payments HTTP/1.1" 200 13214
+INFO 2024-10-10 13:40:12,344 basehttp "GET /api/payments HTTP/1.1" 200 13214
+WARNING 2024-10-10 13:42:43,760 log Bad Request: /api/payments
+WARNING 2024-10-10 13:42:43,762 basehttp "POST /api/payments HTTP/1.1" 400 37
+INFO 2024-10-10 13:48:40,275 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:48:41,849 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 13:51:52,087 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 13:51:53,825 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 22:44:23,257 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 22:44:58,273 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 22:46:53,107 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-10 22:46:53,107 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 1171
+INFO 2024-10-10 22:46:53,121 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 1171
+INFO 2024-10-10 22:46:53,121 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-10 22:47:23,006 basehttp "POST /api/send-email/ HTTP/1.1" 201 142
+INFO 2024-10-10 22:59:10,435 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 23:00:22,307 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-10 23:00:22,309 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 1171
+INFO 2024-10-10 23:00:22,325 basehttp "GET /api/pdfs/ HTTP/1.1" 200 1250
+INFO 2024-10-10 23:00:22,338 basehttp "GET /api/transfer-ownership HTTP/1.1" 200 1171
+INFO 2024-10-10 23:00:34,504 basehttp "POST /api/send-email/ HTTP/1.1" 201 167
+INFO 2024-10-10 23:01:23,973 basehttp "GET /api/send-email/ HTTP/1.1" 200 23023
+WARNING 2024-10-10 23:01:24,142 log Not Found: /favicon.ico
+WARNING 2024-10-10 23:01:24,143 basehttp "GET /favicon.ico HTTP/1.1" 404 16410
+INFO 2024-10-10 23:05:58,561 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\my_project\settings.py changed, reloading.
+INFO 2024-10-10 23:05:59,404 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 23:07:56,455 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\landtitles\views.py changed, reloading.
+INFO 2024-10-10 23:07:57,346 autoreload Watching for file changes with StatReloader
+INFO 2024-10-10 23:08:23,129 autoreload C:\Users\Rachelle\Desktop\Project\Application\Landtitles\landbackend\my_project\settings.py changed, reloading.

@@ -12,7 +12,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import AuthViewSet, OwnershipTransferViewSet, LandTitleViewSet, PDFFileViewSet, UserViewSet, NotarialDeedViewSet, UserEmailViewSet
+from .views import AuthViewSet ,SignupView, OwnershipTransferViewSet, LandTitleViewSet, PDFFileViewSet, UserViewSet, NotarialDeedViewSet, UserEmailViewSet, PaymentViewSet, ActivateAccount
 from .views import transfer_ownership
 
 urlpatterns = [
@@ -35,6 +35,10 @@ notarialdeed_routes =router.register("api/notarialdeed", NotarialDeedViewSet, ba
 
 router.register("api/pdfs/", PDFFileViewSet, basename='pdf-files')
 
+router.register(r'api/payments', PaymentViewSet, basename='payment')
+
+router.register(r'api/accounts/signup', SignupView, basename='signup')
+
 
 
 
@@ -50,6 +54,7 @@ urlpatterns = [
     # path('api/accounts/', RegisterView.as_view(), name='register'),
     # path('api/login/', LoginView.as_view(), name='login'),
     path('api-auth/', include('rest_framework.urls')),
+    path('activate/<uidb64>/<token>/', ActivateAccount.as_view(), name='activate'),
     # path('api/accounts/signup/', views.signup, name='signup'),
     path('save-location/', views.save_location, name='save_location'),
     # path('api/transfer-ownership/', transfer_ownership, name='transfer_ownership'),

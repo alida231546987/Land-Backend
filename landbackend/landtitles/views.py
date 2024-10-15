@@ -50,6 +50,41 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import LandTitleSerializer, PDFFileSerializer , NotarialDeedSerializer
+from django.contrib.auth.decorators import login_required  # Import login_required
+
+#Send email to confirm account
+from rest_framework import generics, status
+from .serializers import RegisterSerializer
+from rest_framework.response import Response
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from django.conf import settings
+from .models import CustomUser
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.template.loader import render_to_string
+from .tokens import account_activation_token  # We'll create this
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+
+#Payement API
+from campay.sdk import Client as CamPayClient
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
+from django.http import FileResponse
+from django.utils.timezone import now
+from .models import Payment
+from .serializers import PaymentSerializer
+from django.contrib.auth import get_user_model
+from campay.sdk import Client as CamPayClient
+from reportlab.pdfgen import canvas
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics import renderPDF
+from reportlab.graphics.barcode import qr
+from reportlab.graphics.barcode.qr import QrCodeWidget
+from io import BytesIO
 
 #Files Shared
 from django.views.decorators.csrf import csrf_exempt
@@ -58,6 +93,7 @@ from .models import PDFFile
 
 User = get_user_model()
 
+    
 
 class AuthViewSet(viewsets.GenericViewSet):
     permision_classes = [AllowAny, ]
@@ -159,8 +195,8 @@ class UserViewSet(viewsets.ModelViewSet):
     
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    
 
+@csrf_exempt  
 @api_view(['POST'])
 def signup(request):
     data = request.data
@@ -372,6 +408,21 @@ def transfer_ownership(request):
             return JsonResponse({'success': False, 'message': 'No land title with the provided credentials'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
+@login_required
+def transfer_ownership_requests(request):
+    current_user = request.user  # The logged-in user
+    owner_name = current_user.username  # Assuming username matches owner_name
+
+    # Filter based on `owner_name` in LandTitle
+    land_titles = LandTitle.objects.filter(owner_name=owner_name)
+    
+    # Get all the transfer requests related to those land titles
+    transfer_requests = TransferOwnership.objects.filter(land_id__in=land_titles.values('id'))
+    
+    # Prepare the data to return
+    data = list(transfer_requests.values())  # Convert the queryset to a list of dictionaries
+    return JsonResponse(data, safe=False)
+
 
 # views.py
 
@@ -398,42 +449,74 @@ class PDFFileViewSet(viewsets.ModelViewSet):
         return Response(data=data)
 
 
-
-
-logger = logging.getLogger('landtitles')
+logger = logging.getLogger(__name__)
 
 class UserEmailViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user email instances, including sending emails.
+    """
     queryset = UserEmail.objects.all()
     serializer_class = UserEmailSerializer
 
-    @action(detail=False, methods=['post'], url_path='send-email')
+    @action(detail=False, methods=['post'], url_path='send-email', serializer_class=UserEmailSerializer)
     def send_email(self, request):
+        """
+        Custom action to send an email based on the provided data.
+        """
+        logger.debug('send_email action called with data: %s', request.data)
+        
+        # Use the SendEmailSerializer for this action
         serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            print('Email serializer is valid, sending mail')
-            recipient = serializer.validated_data['recipient']
-            message = serializer.validated_data['message']
-            file = serializer.validated_data.get('file', None)
+        if not serializer.is_valid():
+            logger.warning('Email serializer is invalid.', extra={'errors': serializer.errors})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Extract validated data
+        recipient = serializer.validated_data.get('recipient')
+        message = serializer.validated_data.get('message')
+        file = serializer.validated_data.get('file', None)
 
-            email = EmailMessage(
-                subject='New Message from React App',
-                body=message,
-                from_email=settings.DEFAULT_FROM_EMAIL,  # Use the default from email
-                to=[recipient],
-            )
-            if file:
-                email.attach(file.name, file.read(), file.content_type)
+        logger.info('Preparing to send email to %s.', recipient)
+        logger.debug('Message: %s', message)
+        if file:
+            logger.debug('File attached: %s', file.name)
 
+        # Create the EmailMessage instance
+        email = EmailMessage(
+            subject='New Message from FRAGMARK',
+            body=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[recipient],
+        )
+
+        # Attach file if provided
+        if file:
             try:
-                email.send(fail_silently=False)  # Make sure fail_silently is False to see errors
-                serializer.save()  # Save the email record in the database
-                
-                print('Email sent and saved successfully')
-                
-                return Response({'success': 'Email sent successfully'}, status=200)
+                email.attach(file.name, file.read(), file.content_type)
+                logger.debug('Attached file: %s', file.name)
             except Exception as e:
-                return Response({'error': str(e)}, status=500)
-        return Response(serializer.errors, status=400)
+                logger.error('Failed to attach file: %s', e)
+                return Response({'error': 'Failed to attach file.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Attempt to send the email
+        try:
+            sent_count = email.send(fail_silently=False)
+            logger.debug('Email send returned: %s', sent_count)
+            
+            if sent_count:
+                # Save the email record in the database
+                user_email = serializer.save()
+                logger.info('Email sent successfully to %s and saved with ID %s.', recipient, user_email.id)
+                return Response({'success': 'Email sent successfully.'}, status=status.HTTP_200_OK)
+            else:
+                logger.error('Email send failed without raising an exception.')
+                return Response({'error': 'Failed to send email.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        except Exception as e:
+            logger.exception('An unexpected error occurred while sending the email.')
+            return Response({'error': 'An unexpected error occurred while sending the email.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 # @csrf_exempt
 # def upload_pdf(request):
 #     if request.method == 'POST':
@@ -449,5 +532,173 @@ class UserEmailViewSet(viewsets.ModelViewSet):
 #     return JsonResponse(pdf_list, safe=False)
 
 
+User = get_user_model()
 
+# Initialize CamPayClient
+campay = CamPayClient({
+        "app_username" : "LWHm0LdslUfK62bZRRGjOV03u9fXpFXcBnhzDNBWGNmUf0OMRhvUVH7vzFZWL3uQBerG2w7qJX__1reqgWFVmQ",
+        "app_password" : "x_Udfgxm_potmkY1bWLERV9ZjWBvtmdJ8CsWnqZsqQPKsnZyzWFXRyFNI1-6o8HG-_dwRPrH1Ppi59rHsvLibg",
+        "environment" : "DEV" #use "DEV" for demo mode or "PROD" for live mode
+})
 
+class PaymentViewSet(viewsets.ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def create(self, request, *args, **kwargs):
+        phone = request.data.get("tel")
+        reference = request.data.get("paymentReference")
+        # Ensure phone is not None
+        if phone is None or phone == "":
+            return JsonResponse({"error": "Phone number is required"}, status=400)
+        campay_status = campay.get_transaction_status({
+         "reference": reference, #The amount you want to collect
+        })
+
+        if campay_status.get('status') == 'SUCCESSFUL':
+            # Fetch the user and appointment
+            # user = get_object_or_404(User, pk=request.user.id)
+
+            # Save payment to the database
+            payment_data = {
+                'reference': campay_status['reference'],
+                'external_reference': campay_status['external_reference'],
+                'status': campay_status['status'],
+                'amount': campay_status['amount'],
+                'currency': campay_status['currency'],
+                'operator': campay_status['operator'],
+                'code': campay_status['code'],
+                'operator_reference': campay_status['operator_reference'],
+                'description': request.data.get('description'),
+                'external_user': '',
+                'phone_number': request.data.get('tel'),
+                'date': now(),
+                # 'user': user.id
+            }
+
+            payment_serializer = self.get_serializer(data=payment_data)
+            payment_serializer.is_valid(raise_exception=True)
+            payment_serializer.save()
+
+            return Response({'success': 'Payment successfully !!!', "data": payment_serializer.data}, status=200)
+
+        else:
+            # Determine the error message
+            reason = collect.get('reason') or collect.get('message') or 'An error occurred with the payment. Please try again later.'
+            return Response({"message": reason}, status=status.HTTP_400_BAD_REQUEST)
+
+        """
+        Generate a PDF receipt for the payment.
+        """
+        buffer = BytesIO()
+        p = canvas.Canvas(buffer)
+
+        current_user = payment_receipt_info["user"]
+
+        # Create a PDF document
+        p.drawString(100, 750, "Payment Receipt For National ID Card Establishment")
+
+        y = 700
+        p.drawString(100, y, f"Reference: {payment_receipt_info['reference']}")
+        p.drawString(100, y - 20, f"ID: {payment_receipt_info['reference']}")
+        p.drawString(100, y - 40, f"User: {current_user.username}")
+        p.drawString(100, y - 60, f"Phone Number: {payment_receipt_info['from']}")
+        p.drawString(100, y - 80, f"Fees: {payment_receipt_info['amount']} {payment_receipt_info['currency']}")
+        p.drawString(100, y - 100, f"Police Station: {payment_receipt_info['location']}")
+        p.drawString(100, y - 120, f"Description: {payment_receipt_info['description']}")
+        p.drawString(100, y - 140, f"Date: {payment_receipt_info['date'].strftime('%Y-%m-%d %H:%M:%S')}")
+
+        # Generate QR Code
+        qrcode_info = (
+            f"Reference: {payment_receipt_info['reference']}\n"
+            f"ID: {payment_receipt_info['reference']}\n"
+            f"User: {current_user.username}\n"
+            f"Phone Number: {payment_receipt_info['from']}\n"
+            f"Fees: {payment_receipt_info['amount']} {payment_receipt_info['currency']}\n"
+            f"Police Station: {payment_receipt_info['location']}\n"
+            f"Description: {payment_receipt_info['description']}\n"
+            f"Date: {payment_receipt_info['date'].strftime('%Y-%m-%d %H:%M:%S')}"
+        )
+
+        qrw = QrCodeWidget(qrcode_info)
+        bounds = qrw.getBounds()
+        width = bounds[2] - bounds[0]
+        height = bounds[3] - bounds[1]
+        d = Drawing(100, 100, transform=[100./width,0,0,100./height,0,0])
+        d.add(qrw)
+        renderPDF.draw(d, p, 100, 500)  # Adjust position as needed
+
+        p.showPage()
+        p.save()
+
+        buffer.seek(0)
+        return buffer
+    
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes  # This is the correct import for force_bytes
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from .models import CustomUser ,Profile # Adjust the import based on your project structure
+from .tokens import account_activation_token  # Ensure this is correctly imported
+
+# To send email
+class SignupView(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            self.send_activation_email(user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def send_activation_email(self, user):
+        try:
+            print(f"Sending activation email to: {user.email}")  # Debugging statement
+            current_site = get_current_site(self.request)
+            mail_subject = 'Activate your Land Management account.'
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = account_activation_token.make_token(user)
+            activation_link = reverse('activate', kwargs={'uidb64': uid, 'token': token})
+            activation_url = f"http://{current_site.domain}{activation_link}"
+
+            # Render the email template with the user and activation URL
+            message = render_to_string('accounts/activation_email.html', {
+                'user': user, 
+                'activation_url': activation_url,
+            })
+
+            # Prepare the email message
+            email = EmailMessage(
+                mail_subject, message, to=[user.email]
+            )
+
+            # Send the email
+            email.send()
+            print(f"Activation email sent to {user.email}")  # Debugging statement
+        except Exception as e:
+            print(f"Error sending activation email: {str(e)}")  # Print error if sending fails
+            
+class ActivateAccount(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = CustomUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+            user = None
+        
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return Response({'message': 'Thank you for your email confirmation. You can now log in.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Activation link is invalid!'}, status=status.HTTP_400_BAD_REQUEST)

@@ -4,17 +4,25 @@ import SignaturePad from 'react-signature-canvas';
 import SignatureCanvas from 'react-signature-canvas';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { CertificateOfOwnership } from '../../PDFs/Certificate of ownership/Certificate.jsx';
-import { AnalyticalSlip } from '../../PDFs/Analyticslip/analyticslip.jsx';
+import { AnalyticalSlip } from '../../PDFs/Analyticslip/AnalyticalSlip.jsx';
 import { API_URL } from '../../../utils/constants.js';
 import axios from 'axios';
+import { FaBell, FaChevronDown, FaChevronRight, FaCloudflare, FaCog, FaEnvelope, FaFile, FaFileArchive, FaFilePdf, FaFileUpload, FaSignature, FaUpload, FaUser, FaLandmark} from  'react-icons/fa';
+import { FiSearch, FiChevronUp, FiChevronDown, FiMail, FiInbox,FiMessageSquare, FiSend, FiUser } from 'react-icons/fi';
+import { AiFillFilePdf } from 'react-icons/ai';
+import { MdEditDocument, MdFileUpload } from 'react-icons/md';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import pdf1 from '../../../assets/pdf1.png'
+import pdf from '../../../assets/pdf.png'
+import debounce from 'lodash.debounce';
+
 // import { notarialdeed } from '../../PDFs/NotarialDeed/notarialdeed';
 
 
 function Dashboard() {
   // State to manage the sidebar collapsed state
   const [isCollapsed, setIsCollapsed] = useState(false);
-
-  //Send files 
   const [files, setFiles] = useState([]); // Files state
   const [destinationDashboard, setDestinationDashboard] = useState(''); // Define state for destinationDashboard
   const [handleUplaod, setHandleUpload] = useState(''); // Define state for destinationDashboard
@@ -23,6 +31,67 @@ function Dashboard() {
   const [handleSubmit, setHandleSubmit] = useState(null);
   const [handleChange, setHandleChange] = useState(null);
   const [file, setFile] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10; // Adjust as needed
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+  const [name, setName] = useState(''); // Name for the signature input
+  const sigCanvas = useRef({}); // Ref for signature pad
+  const [unfold, setUnFold] = useState(false)
+  const[landtitle,  SetLandTitle] = useState("");
+
+    // Handle Search
+    useEffect(() => {
+      const lowercasedQuery = searchQuery.toLowerCase();
+      const filtered = requests.filter((landtitle) =>
+        Object.values(landtitle).some(
+          (value) =>
+            value &&
+            value.toString().toLowerCase().includes(lowercasedQuery)
+        )
+      );
+      setFilteredRequests(filtered);
+      setCurrentPage(1); // Reset to first page on search
+    }, [searchQuery, landtitle]);
+  
+    // Handle Sorting
+    const handleSort = (key) => {
+      let direction = 'ascending';
+      if (
+        sortConfig.key === key &&
+        sortConfig.direction === 'ascending'
+      ) {
+        direction = 'descending';
+      }
+      setSortConfig({ key, direction });
+    };
+  
+    const sortedRequests = React.useMemo(() => {
+      if (sortConfig.key) {
+        const sorted = [...filteredRequests].sort((a, b) => {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? 1 : -1;
+          }
+          return 0;
+        });
+        return sorted;
+      }
+      return filteredRequests;
+    }, [filteredRequests, sortConfig]);
+  
+    // Pagination Logic
+    const indexOfLastRow = currentPage * rowsPerPage;
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    const currentRows = sortedRequests.slice(indexOfFirstRow, indexOfLastRow);
+    const totalPages = Math.ceil(sortedRequests.length / rowsPerPage);
+  
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
 
   // For Email Messages 
   const [recipient, setRecipient] = useState('');
@@ -119,6 +188,31 @@ function Dashboard() {
       }
     };
 
+    
+
+  const [searchTerm , setSearchTerm] = useState("");
+  const handleSearch = debounce((event) => {
+      setSearchTerm(event.target.value);
+  }, 300);
+
+      const debouncedSearch = debounce((term) => {
+        // Your search logic here
+        console.log(`Searching for: ${term}`);
+    }, 300); // 300 milliseconds delay
+
+    // Effect to handle changes to the searchTerm
+    useEffect(() => {
+        if (searchTerm) {
+            debouncedSearch(searchTerm);
+        }
+
+        // Cleanup function to cancel the debounce on unmount or when searchTerm changes
+        return () => {
+            debouncedSearch.cancel();
+        };
+    }, [searchTerm]); // Dependency array to re-run the effect on searchTerm change
+  
+  
 
   const [pdfFiles, setPdfFiles] = useState([]); // Define pdfFiles state
 
@@ -325,13 +419,27 @@ function Dashboard() {
     Owner_name: "",
     Location: "",
     Size: ""
-  }]} />);
+  }]} />
+);
+  
+  const [selectedDocument1, setSelectedDocument1] = useState(<AnalyticalSlip data={[{
+   ...landData
+  }]}  />)
+  const [fileName, setFileName] = useState("");
 
-  const [fileName, setFileName] = useState("certificate-of-ownership.pdf");
-  const [landTitle, setLandTitle] = useState(null);
+  const formatCoordinates=(data)=>{
+    let str = ``
+    if(!data) return str;
+    data?.forEach((item)=>{
+      str+=`Latitude: ${item?.latitude} - Longitude: ${item?.longitude}\n`
+    })
+
+    return str;
+  }
+
 
   useEffect(() => {
-    console.log("Signature changed, setting the selected document");
+    console.log('changed ....: ', landData)
     setSelectedDocument(
       <CertificateOfOwnership data={[{
         Owner_name: landData.owner_name,  // Use 'data' here instead of 'request'
@@ -339,42 +447,27 @@ function Dashboard() {
         Size: landData.land_size,
       }]} signature={signature} />
     )
+    setSelectedDocument1(
+      <AnalyticalSlip data={[{
+        ...landData,
+        coordinates: formatCoordinates(landData?.coordinates ?? [])
+      }]} signature={signature} />
+    )
   }, [signature]);
 
-  useEffect(() => {
-    if (landTitle) {
-      console.log(`landtitle changed to `, landTitle);
-      setSelectedDocument(
-        <CertificateOfOwnership data={[{
-          Owner_name: landTitle.owner_name,  // Use 'data' here instead of 'request'
-          Location: landTitle.land_location,
-          Size: landTitle.land_size,
-        }]} signature={signature} />
-      );
-    }
-  }, [landTitle]);
+  // fetch land data
+  const fetchLandData =async()=>{
+    axios.get(`${API_URL}/api/landtitles/${landId}`)
+    .then((response) => {
+      console.log('data: ',response.data);
+      setLandData({...response.data})
+    })
+    .catch((error) => {
+      console.log(`Error getting land title`);
+      console.log(error);
+    })
+  }
 
-  //Fetch Land Info for certificate of ownership
-  const fetchLandData = async (land_id) => {
-    try {
-      const response = await fetch(`http://localhost:8000/api/landtitles/${land_id}`);  // Ensure the correct endpoint
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();  // Ensure `data` contains owner_name, land_location, and land_size fields
-
-      // Assuming `data` is an object with owner_name, land_location, and land_size
-      setSelectedDocument(
-        <CertificateOfOwnership data={[{
-          Owner_name: landData.owner_name,  // Use 'data' here instead of 'request'
-          Location: landData.land_location,
-          Size: landData.land_size,
-        }]} signature={signature} />
-      );
-    } catch (error) {
-      console.error('Error fetching land data:', error);
-    }
-  };
   // Fetch transfer ownership requests
   useEffect(() => {
     const fetchRequests = async () => {
@@ -393,16 +486,12 @@ function Dashboard() {
     };
 
     fetchRequests();
-  }, []);  // Runs only once when the component mounts
-  // Empty dependency array ensures it only runs once on component mount
+  }, []); 
 
-  useEffect(() => {
-    if (selectedDocument) {
-      console.log('selected document changed to', selectedDocument);
-    }
-  }, [selectedDocument]);
+  useEffect(()=>{
+    fetchLandData();
+  },[landId])
 
-  // Function to toggle sidebar collapse
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -412,6 +501,7 @@ function Dashboard() {
     setActiveSection(section);
   };
 
+
   return (
     <div className="dashboard">
       {/* Sidebar */}
@@ -419,37 +509,83 @@ function Dashboard() {
         <h2>Dashboard</h2>
         <ul>
           <li className={activeSection === 'home' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('home')}>
-              <i className="fa fa-home"></i> Send Email
+            <a href="#" onClick={() =>{ 
+              setUnFold(false) 
+              showContent('home')
+            }}>
+              <FiMail />
+              <span>Send Email</span>
             </a>
           </li>
           <li className={activeSection === 'transferofownershiprequest' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('transferofownershiprequest')}>
-              <i className="fa fa-user"></i> Transfer of ownerships request
+            <a href="#" onClick={() =>{
+                setUnFold(false)
+               showContent('transferofownershiprequest')
+               }}>
+              <FiInbox color ='white'/>
+              <span>Transfer request</span>
             </a>
           </li>
           <li className={activeSection === 'messages' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('messages')}>
-              <i className="fa fa-envelope"></i> Messages
+            <a href="#" onClick={() =>{ 
+              setUnFold(false)
+              showContent('messages')}}>
+              <FiMessageSquare />
+              <span>Messages</span>
             </a>
           </li>
           <li className={activeSection === 'Send-a-file' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('Send-a-file')}>
-              <i className="fa fa-bell"></i> Send a file 
+            <a href="#" onClick={() =>{ 
+              setUnFold(false)
+              showContent('Send-a-file')}}>
+                <FiSend />
+              <span>Send a file</span>
             </a>
           </li>
           <li className={activeSection === 'profile' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('profile')}>
-              <i className="fa fa-user-circle"></i> Profile
+            <a href="#" onClick={() => {
+              setUnFold(false)
+              showContent('profile')}}>
+              <FiUser />
+              <span>Profile</span>
             </a>
           </li>
-          <li className={activeSection === 'land-title' ? 'active' : ''}>
+          <li onClick={()=> {
+            setUnFold((unfold)=> !unfold)
+            }} className={unfold ? 'active' : ''}>
+            <a href="#!" style={{padding: unfold ? '4%' : '1%'}}>
+              <FaLandmark />  
+              <span className='text-sm'>Land Title </span>
+              <FaChevronRight />
+            </a>
+          </li>
+          {
+              unfold && 
+              <ul className='w-1/2 h-auto ml-8'>
+              <li>
+                <a style={{backgroundColor: 'transparent', textDecoration: 'underline'}} href="#!" onClick={() => {
+            
+                  showContent('land-title')
+                  }}>
+                  <span>Create new land title</span>
+                </a>
+              </li>
+
+              <li >
+                <a href="#!" style={{backgroundColor: 'transparent', textDecoration: 'underline'}} onClick={() => showContent('list-of-landtitle')}>
+                  <span>Lists of Landtitles</span>
+                </a>
+              </li>
+            </ul>}
+          {/* <li className={activeSection === 'land-title' ? 'active' : ''}>
             <a href="#" onClick={() => showContent('land-title')}>
               <i className="fa fa-cog"></i> Establish Land Title
             </a>
-          </li>
+          </li> */}
           <li className={activeSection === 'generate-pdfs' ? 'active' : ''}>
-            <a href="#" onClick={() => showContent('generate-pdfs')}>
+            <a href="#" onClick={() => {
+              setUnFold(false)
+              showContent('generate-pdfs')}}>
               <i className="fa fa-file-pdf"></i> Generate PDFs
             </a>
           </li>
@@ -459,8 +595,8 @@ function Dashboard() {
       {/* Main Content Area */}
       <div className={`main-content ${isCollapsed ? 'collapsed' : ''}`} id="main-content">
         {/* Header Section */}
-        <div className={`header ${isCollapsed ? 'collapsed' : ''}`} id="header">
-          <button className={`toggle-btn ${isCollapsed ? 'collapsed' : ''}`} onClick={toggleSidebar}>
+        <div className={`header ${isCollapsed ? 'collapsed' : ''}flex items-center space-x-2`} id="header">
+          <button className={`toggle-btn ${isCollapsed ? 'collapsed' : ''}text-white text-xl font-semibold mx-2 flex items-center space-x-2`} onClick={toggleSidebar}>
             &#9776;
           </button>
           <b>Land register</b>
@@ -479,13 +615,15 @@ function Dashboard() {
                 required
               />
             </div>
-            <div>
+            <div className="w-200">
               <label>Message:</label>
-              <textarea
+              <input
+              className="w-200"
+              type="message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required
-              />
+                />
             </div>
             <div>
               <label>Attach File:</label>
@@ -502,52 +640,66 @@ function Dashboard() {
         </div>
 
         <div className={`content ${activeSection === 'transferofownershiprequest' ? 'active' : ''}`} id="transferofownershiprequest">
-          <div>
-            <h2>Transfer of Ownership Requests</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Land ID</th>
-                  <th>Owner's Name</th>
-                  <th>Owner's Email</th>
-                  <th>Present Land Size</th>
-                  <th>Location of Land</th>
-                  <th>National ID</th>
-                  <th>Buyer's Name</th>
-                  <th>Buyer's Email</th>
-                  <th>Buyer's Address</th>
-                  <th>Land Size to Sell</th>
-                  <th>Selling Type</th>
-                  <th>Date of Request</th>
-                </tr>
-              </thead>
-              <tbody>
-                {requests.length > 0 ? (
-                  requests.map((request, index) => (
-                    <tr key={index}>
-                      <td>{request.land_id}</td>
-                      <td>{request.owner_name}</td>
-                      <td>{request.owner_email}</td>
-                      <td>{request.present_land_size}</td>
-                      <td>{request.location_of_land}</td>
-                      <td>{request.national_id}</td>
-                      <td>{request.buyer_name}</td>
-                      <td>{request.buyer_email}</td>
-                      <td>{request.buyer_address}</td>
-                      <td>{request.land_size_to_sell}</td>
-                      <td>{request.selling_type}</td>
-                      <td>{request.date_of_request}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="12">No requests available.</td>
+          <div className="max-w-7xl mx-auto p-4 bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-semibold text-black-700 mb-4">Transfer Requests</h2>
+
+            {/* Search bar */}
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Search by Land ID, Owner or Buyer..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleSearch} // Define the handleSearch function to filter data
+              />
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+                <thead>
+                  <tr className="bg-blue-500 text-white">
+                    <th className="py-3 px-4 text-left">Land ID</th>
+                    <th className="py-3 px-4 text-left">Owner's Name</th>
+                    <th className="py-3 px-4 text-left">Owner's Email</th>
+                    <th className="py-3 px-4 text-left">Present Land Size</th>
+                    <th className="py-3 px-4 text-left">Location of Land</th>
+                    <th className="py-3 px-4 text-left">National ID</th>
+                    <th className="py-3 px-4 text-left">Buyer's Name</th>
+                    <th className="py-3 px-4 text-left">Buyer's Email</th>
+                    <th className="py-3 px-4 text-left">Buyer's Address</th>
+                    <th className="py-3 px-4 text-left">Land Size to Sell</th>
+                    <th className="py-3 px-4 text-left">Selling Type</th>
+                    <th className="py-3 px-4 text-left">Date of Request</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {requests.length > 0 ? (
+                    requests.map((request, index) => (
+                      <tr key={index} className="border-b hover:bg-gray-100">
+                        <td className="py-2 px-4">{request.land_id}</td>
+                        <td className="py-2 px-4">{request.owner_name}</td>
+                        <td className="py-2 px-4">{request.owner_email}</td>
+                        <td className="py-2 px-4">{request.present_land_size}</td>
+                        <td className="py-2 px-4">{request.location_of_land}</td>
+                        <td className="py-2 px-4">{request.national_id}</td>
+                        <td className="py-2 px-4">{request.buyer_name}</td>
+                        <td className="py-2 px-4">{request.buyer_email}</td>
+                        <td className="py-2 px-4">{request.buyer_address}</td>
+                        <td className="py-2 px-4">{request.land_size_to_sell}</td>
+                        <td className="py-2 px-4">{request.selling_type}</td>
+                        <td className="py-2 px-4">{request.date_of_request}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="12" className="py-4 text-center text-gray-500">No requests available.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
 
         <div className={`content ${activeSection === 'messages' ? 'active' : ''}`} id="messages">
         <h2>Messages</h2>
@@ -659,52 +811,37 @@ function Dashboard() {
                 </div>
               </form>
           </div>
+        {/* View list of land title*/}
+        <div className = {`content ${activeSection === 'list-of-landtitle' ? 'active' : ''}`} id = "list-of-landtitle">
+          <h2>List of existing land titles</h2>
+        </div>
 
         <div className={`content ${activeSection === 'generate-pdfs' ? 'active' : ''}`} id="generate-pdfs">
           <h2>Generate PDFs</h2>
           <div className="pdf-form">
+          <label htmlFor="land-id">Land ID:</label>
+          <input type="text" id="land-id" placeholder="Enter Land ID" value={landId} onChange={(e) => setLandId(e.target.value)} />
+
             <label htmlFor="pdf-type">Select PDF Type:</label>
             <select id="pdf-type" onChange={(e) => {
               let value = e.target.value;
-              console.log(`Select changed to ${value}`)
               switch (value) {
                 case "certificate":
-                  setSelectedDocument(<CertificateOfOwnership data={[
-                    Owner_name = landData.owner_name,
-                    Location = landData.land_location,
-                    Size = landData.land_size,
-                  ]} signature={signature} />);
                   setFileName("certificate-of-ownership.pdf");
                   break;
                 case "analytical-slip":
-                  setSelectedDocument(<AnalyticalSlip data={{
-                    nature: landData.nature,
-                    size: landData.land_size,
-                    location: landData.land_location,
-                    coordinates: landData.coordinates,
-                    fullName: landData.owner_name,
-                    profession: landData.profession,
-                    address: landData.address,
-                    dob: landData.dob,
-                    fatherName: landData.father_name,
-                    pob: landData.pob,
-                    motherName: landData.mother_name,
-                    deliveryDate: landData.delivery_date
-                }} signature={signature} />);
-                  setFileName("analytical-slip.pdf");
+                setFileName("analytical-slip.pdf");
                   break;
-                // Handle other PDF types
+                default:
+                  break;
               }
-            }}>
+            }} >
               <option value="certificate">Certificate of Ownership</option>
               <option value="analytical-slip">Analytical Slip</option>
               <option value="notarial-deed">Notarial Deed</option>
               <option value="financial-report">Financial Report</option>
               <option value="inventory-list">Inventory List</option>
             </select>
-
-            <label htmlFor="land-id">Land ID:</label>
-            <input type="text" id="land-id" placeholder="Enter Land ID" value={landId} onChange={(e) => setLandId(e.target.value)} />
 
             <label htmlFor="owner-name">Owner's Name:</label>
             <input type="text" id="owner-name" placeholder="Enter Owner's Name" />
@@ -714,32 +851,16 @@ function Dashboard() {
 
             <label htmlFor="signature">Signature:</label>
             <SignatureCanvas ref={signatureRef} penColor="black" canvasProps={{ width: 500, height: 200, className: 'signature-canvas' }} />
-            <button type="button" onClick={saveSignature}>Save Signature</button>
-            <button type="button" onClick={clearSignature}>Clear Signature</button>
-
-            <button className='btn'
-              onClick={() => {
-                axios.get(`${API_URL}/api/landtitles/${landId}`)
-                  .then((response) => {
-                    console.log('Data gotten from the server');
-                    console.log(response.data);
-
-                    setLandTitle(response.data);
-                  })
-                  .catch((error) => {
-                    console.log(`Error getting land title`);
-                    console.log(error);
-                  })
-              }}
-            >Get data</button>
+            <button type="button" onClick={()=> saveSignature()}>Save Signature</button>
+            <button type="button" onClick={()=> clearSignature()}>Clear Signature</button>
 
             <button className="btn btn-add">
               <PDFDownloadLink
-                document={selectedDocument}
+                document={fileName === 'analytical-slip.pdf' ? selectedDocument1 : selectedDocument}
                 fileName={fileName}
               >
                 {({ loading }) =>
-                  loading ? 'Preparing document...' : 'Generate PDF'
+                  loading ? 'Preparing document...' : fileName
                 }
               </PDFDownloadLink>
             </button>

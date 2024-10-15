@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import {Route ,BrowserRouter as Router,Routes} from "react-router-dom" ;
 import './landsurveyor.css';
 import axios from 'axios';
 import geolib from 'geolib';
 import { getDistance, getAreaOfPolygon } from 'geolib';
 import { API_URL } from '../../../utils/constants.js';
+import Map from '../../Map Api/map.jsx';
+
 
 function Dashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -40,6 +43,11 @@ function Dashboard() {
   function FileUpload() {
     const [destinationDashboard, setDestinationDashboard] = useState('');
   };
+
+  const [landId , setLandId] = useState("");
+  const [ownerName,  setOwnerName] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -80,12 +88,39 @@ function Dashboard() {
   //const showContent = (section) => {
     //setActiveSection(section);
   //};
+  // For the adding of the techival file 
+  const handleFileChangee = (e) => {
+    setFile(e.target.files[0]);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("land_id", landId);
+    formData.append("owner_name", ownerName);
+    formData.append("owner_email", ownerEmail);
+    formData.append("file", file);
+
+    try {
+        const response = await axios.post("/api/technical-file", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        setMessage("Data uploaded successfully!");
+    } catch (error) {
+        console.error("Error uploading data:", error);
+        setMessage("Error uploading data.");
+    }
+};
 
   const handleInputChange = (index, field, value) => {
     const newRows = [...rows];
     newRows[index][field] = value;
     setRows(newRows);
   };
+
+  
 
   const addRow = () => {
     console.log("Adding row to the locations table.");
@@ -233,6 +268,26 @@ function Dashboard() {
               <i className="fa fa-home"></i> Send Files
             </a>
           </li>
+          <li className={activeSection === 'map' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('map')}>
+              <i className="fa fa-home"></i> View Map
+            </a>
+          </li>
+          <li className={activeSection === 'map' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('map')}>
+              <i className="fa fa-home"></i> View Map
+            </a>
+          </li>
+          <li className={activeSection === 'technical-file' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('technical-file')}>
+              <i className="fa fa-home"></i> Add technical file
+            </a>
+          </li>
+          <li className={activeSection === 'view-technical-file' ? 'active' : ''}>
+            <a href="#" onClick={() => showContent('view-technical-file')}>
+              <i className="fa fa-home"></i> View technical files
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -251,11 +306,6 @@ function Dashboard() {
             <input type="text" id="landid" placeholder="Enter Land Title ID" />
             <label htmlFor="location">Location:</label>
             <input type="text" id="location" placeholder="Enter Land Location" />
-            <label htmlFor="image-upload">Upload Technical:</label>
-            <input type="file" id="image-upload" accept="image/*" />
-            <label htmlFor="pdf-upload">Upload Technical File in PDF Format:</label>
-            <input type="file" id="pdf-upload" accept="application/pdf" />
-
             <table>
               <thead>
                 <tr>
@@ -323,6 +373,49 @@ function Dashboard() {
             <button onClick={handleUpload}>Upload PDF</button>
           </div>
         </div>
+        <div className={`content ${activeSection === 'technical-file' ? 'active' : ''}`} id="technical-file">
+          <h2>Create new technical file</h2>
+          <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Land ID:</label>
+                    <input
+                        type="text"
+                        value={landId}
+                        onChange={(e) => setLandId(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Owner Name:</label>
+                    <input
+                        type="text"
+                        value={ownerName}
+                        onChange={(e) => setOwnerName(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Owner Email:</label>
+                    <input
+                        type="email"
+                        value={ownerEmail}
+                        onChange={(e) => setOwnerEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Upload File:</label>
+                    <input type="file" onChange={handleFileChangee} required />
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            {message && <p>{message}</p>}
+        </div>
+        <div className={`content ${activeSection === 'view-technical-file' ? 'active' : ''}`} id="view-technical-file">
+          <h2>View list of techical files</h2>
+        </div>
+        {/* <div className={`content ${activeSection === 'technical-file' ? 'active' : ''}`} id="map">
+        </div> */}
       </div>
     </div>
   );

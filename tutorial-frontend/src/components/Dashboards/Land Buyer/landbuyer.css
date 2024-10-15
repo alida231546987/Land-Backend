@@ -183,13 +183,34 @@
     background-color: #4CAF50;
     color: white;
     border: none;
+    width: 140px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  form .pbutton:hover {
+    background-color: #45a049;
+  }
+
+  form .disabledbutton {
+    width: 210px;
+    background-color: #2f3e4eb8;
+    color: white;
+    border: none;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
   
-  form button:hover {
-    background-color: #45a049;
+  form .disabledbutton:hover {
+    background-color: #1c2632b8;
   }
   
   form a {

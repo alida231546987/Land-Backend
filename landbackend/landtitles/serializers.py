@@ -13,7 +13,7 @@ from rest_framework.authtoken.models import Token
 from .models import Profile, TransferOwnership
 
 from rest_framework import serializers
-from .models import LandTitle, PDFFile ,NotarialDeed, UserEmail
+from .models import LandTitle, PDFFile ,NotarialDeed, UserEmail, Payment
 
 
 
@@ -169,5 +169,8 @@ class UserEmailSerializer(serializers.ModelSerializer):
         return value
         
 
-
-
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'  # You can specify fields explicitly if needed
+        read_only_fields = ['reference', 'status', 'date']

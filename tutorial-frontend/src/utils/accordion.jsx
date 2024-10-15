@@ -38,9 +38,9 @@ const data = [
   },
   {
     //icon: <MdAnalytics />,
-    heading: "Best price on the market",
+    heading: "Laws and Ordinances concerning the cadastral survey records",
     detail:
-      "Exercitation in fugiat est ut ad ea cupidatat ut in cupidatat occaecat ut occaecat consequat est minim minim esse tempor laborum consequat esse adipisicing eu reprehenderit enim.",
+      "According to Law No 76/25 of the 14 of december 1976 part 1 section 9 Land owners must be present on their land when the spot checks or investigations are carried out so that they may formulate any remarks they have to make ",
   },
 ];
 export default data;
